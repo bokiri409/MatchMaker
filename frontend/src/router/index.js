@@ -1,42 +1,48 @@
-import Vue from 'vue'
-import Router from 'vue-router'
+import Vue from "vue";
+import Router from "vue-router";
 
-import constants from '../lib/constants'
+import constants from "../lib/constants";
 
 // 유저
-import Login from '../page/user/Login.vue'
-import Join from '../page/user/Join.vue'
-import MyPage from '../page/user/MyPage.vue'
+import Login from "../page/user/Login.vue";
+import Join from "../page/user/Join.vue";
+import JoinSession from "../page/user/JoinSession.vue";
+import MyPage from "../page/user/MyPage.vue";
 
 // 포스트
-import List from '../page/post/List.vue'
- 
-Vue.use(Router) 
- 
+import List from "../page/post/List.vue";
+
+Vue.use(Router);
+
 export default new Router({
-  routes: [   
+  routes: [
     // 로그인/가입
-    { 
-      path: '/user/login',
+    {
+      path: "/user/login",
       name: constants.URL_TYPE.USER.LOGIN,
-      component: Login
+      component: Login,
     },
     {
-      path: '/user/join',
+      path: "/user/join",
       name: constants.URL_TYPE.USER.JOIN,
-      component: Join
+      component: Join,
+    },
+    {
+      path: "/user/joinSession",
+      name: constants.URL_TYPE.USER.JOINSESSION,
+      component: JoinSession,
     },
     // 마이페이지
     {
-      path: '/user/mypage',
+      path: "/user/mypage",
       name: constants.URL_TYPE.USER.MYPAGE,
-      component: MyPage
+      component: MyPage,
     },
     // 포스트
-    { 
-      path: '/',
+    {
+      path: "/",
       name: constants.URL_TYPE.POST.MAIN,
       component: List,
     },
-  ]
-})
+  ],
+});
