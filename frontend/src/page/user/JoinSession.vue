@@ -1,19 +1,27 @@
 <template>
-  <div class="user">
-    <div class="wrapC table">
-      <div class="middle">
-        <div class="input-wrap">
-          <input
-            v-model="user.name"
-            id="name"
-            placeholder="사용자명을 입력해주세요"
-            type="text"
-          />
+  <div id="container">
+    <div class="user" v-if="!session">
+      <div class="wrapC table">
+        <div class="middle">
+          <div class="input-wrap">
+            <input
+              v-model="user.name"
+              id="name"
+              placeholder="사용자명을 입력해주세요"
+              type="text"
+            />
+          </div>
+          <button class="btn btn--back btn--login" @click="checkHandler()">
+            입장
+          </button>
         </div>
-        <button class="btn btn--back btn--login" @click="checkHandler()">
-          입장
-        </button>
       </div>
+    </div>
+
+    <div id="session" v-if="session">
+      <button class="btn btn--back btn--login" @click="leaveSession()">
+        퇴장
+      </button>
     </div>
   </div>
 </template>
@@ -42,11 +50,16 @@ export default {
        * - 페이지 이동 
        * - 사용자명 넘겨주기
        * */ 
+      this.session = true;
     },
+    leaveSession: function() {
+      this.session = false;
+    }
   },
   data: () => {
     return {
       constants,
+      session: undefined,
       user: {
         name: "",
       },
