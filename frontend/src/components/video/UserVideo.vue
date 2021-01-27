@@ -29,7 +29,7 @@ export default {
 	methods: {
 		getConnectionData () {
 			const { connection } = this.streamManager.stream;
-			return JSON.parse(connection.data);
+			return (connection.data);
 		},
 	},
 };
