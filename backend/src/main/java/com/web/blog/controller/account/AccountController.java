@@ -41,6 +41,8 @@ public class AccountController {
     @Autowired
     UserService userService;
 
+    String success = "success";
+
     @GetMapping("/account/login")
     @ApiOperation(value = "로그인")
     public Object login(@RequestParam(required = true) final String email,
@@ -53,11 +55,11 @@ public class AccountController {
         if (userOpt.isPresent()) {
             final BasicResponse result = new BasicResponse();
             result.status = true;
-            result.data = "success";
+            result.data = success;
             User u = new User();
             u.setEmail(userOpt.get().getEmail());
             u.setNickname(userOpt.get().getNickname());
-            result.object = (Object) u;
+            result.object = u;
             response = new ResponseEntity<>(result, HttpStatus.OK);
         } else {
             response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -73,26 +75,22 @@ public class AccountController {
         // 회원가입단을 생성해 보세요.
         final BasicResponse result = new BasicResponse();
         result.status = true;
-        result.data = "success";
-        // System.out.println(request);
+        result.data = success;
 
-        if(userDao.getUserByEmail(request.getEmail()) != null){
+        if (userDao.getUserByEmail(request.getEmail()) != null) {
             result.status = false;
             result.data = "중복되는 이메일 입니다!";
-        }
-        else if(userDao.getUserByNickname(request.getNickname()) != null){
+        } else if (userDao.getUserByNickname(request.getNickname()) != null) {
             result.status = false;
             result.data = "중복되는 닉네임 입니다!";
-        }
-        else{
+        } else {
             User user = new User();
-            // User user = new User(request.getPassword(), request.getEmail(), request.getNickname());
             user.setEmail(request.getEmail());
             user.setNickname(request.getNickname());
             user.setPassword(request.getPassword());
-            user.setCertified(certified_key());
+            user.setCertified(certifiedKey());
             userService.save(user);
-            result.object = (Object) user;
+            result.object = user;
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -100,13 +98,10 @@ public class AccountController {
 
     @PutMapping("/account/update")
     @ApiOperation(value = "회원정보수정")
-    public Object update(@RequestBody User user){
+    public Object update(@RequestBody User user) {
         final BasicResponse result = new BasicResponse();
         result.status = true;
-        result.data = "success";
-        System.out.println(user.getEmail());
-        System.out.println(user.getNickname());
-        System.out.println(user.getPassword());
+        result.data = success;
         userService.updateByEmail(user.getEmail(), user);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -114,29 +109,26 @@ public class AccountController {
 
     @DeleteMapping("/account/delete")
     @ApiOperation(value = "회원정보탈퇴")
-    public Object delete(@RequestParam(required = true) final String email){
+    public Object delete(@RequestParam(required = true) final String email) {
         final BasicResponse result = new BasicResponse();
         result.status = true;
-        result.data = "success";
+        result.data = success;
 
         userDao.deleteByEmail(email);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    private String certified_key() {
+    private String certifiedKey() {
         Random random = new Random();
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         int num = 0;
 
         do {
             num = random.nextInt(75) + 48;
             if ((num >= 48 && num <= 57) || (num >= 65 && num <= 90) || (num >= 97 && num <= 122)) {
                 sb.append((char) num);
-            } else {
-                continue;
             }
-
         } while (sb.length() < 10);
         return sb.toString();
     }
