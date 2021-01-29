@@ -1,5 +1,10 @@
 package com.web.blog.model.user;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
+
 import lombok.*;
 
 @Data
@@ -7,10 +12,25 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Component
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AuthenticationRequest {
+    private User user;
 
     String email;
     String password;
     String name;
+
+    public User getLoggedUser() {
+        return user;
+    }
+
+    public void setLoggedUser(User user) {
+        this.user = user;
+    }
+
+    public boolean isLoggedUser() {
+        return this.user != null;
+    }
 
 }
