@@ -1,5 +1,5 @@
 <template>
-  <div id="container">
+  <div id="main-container" class="container">
     <div class="user" v-if="!session">
       <div class="wrapC table">
         <div class="middle">
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div id="session" v-if="session">
+    <div id="session" class="row" v-if="session">
 		<div id="main-video" class="col-md-6">
 			<user-video :stream-manager="mainStreamManager"/>
 		</div>
@@ -46,48 +46,47 @@ const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 export default {
-  data: () => {
-    return {
-      constants,
+	data: () => {
+		return {
+			constants,
 			OV: undefined,
 			mainStreamManager: undefined,
-      session: undefined,
+			session: undefined,
 			publisher: undefined,
-      subscribers: [],
-      
-			mySessionId: '127836712',
-      user: {
-        name: "",
-      },
-    };
-  },
-  components: {
-	  UserVideo,
-  },
-  created() {},
-  watch: {},
-  methods: {
-    checkHandler: function() {
-      let err = true;
-      let msg = "";
-
-      !this.user.name && ((msg = "사용자명을 입력해주세요"), (err = false));
-
-      if (!err) alert(msg);
-      else this.joinSession();
-    },
-    joinSession: function() {
-      this.OV = new OpenVidu();
-
-      this.session = this.OV.initSession();
-
-      // stream 생성 시 session에 해당 stream을 subscriber로 추가
-      this.session.on('streamCreated', ({ stream }) => {
+			subscribers: [],
+			mySessionId: undefined,
+			user: {
+				name: "",
+			},
+		};
+	},
+	components: {
+		UserVideo,
+	},
+	created() {},
+	watch: {},
+	methods: {
+		checkHandler: function() {
+			let err = true;
+			let msg = "";
+			
+			!this.user.name && ((msg = "사용자명을 입력해주세요"), (err = false));
+			
+			if (!err) alert(msg);
+			else this.joinSession();
+		},
+		joinSession: function() {
+			this.OV = new OpenVidu();
+			
+			this.session = this.OV.initSession();
+			
+			// stream 생성 시 session에 해당 stream을 subscriber로	
+			this.session.on('streamCreated', ({ stream }) => {
 				const subscriber = this.session.subscribe(stream);
 				this.subscribers.push(subscriber);
 			});
-
-      // stream 제거 시 session에서 해당 stream에 해당하는 subscriber 삭제
+			
+			// stream 제거 시 session에서 해당 stream에 해당하는 subscriber 삭제
 			this.session.on('streamDestroyed', ({ stream }) => {
 				const index = this.subscribers.indexOf(stream.streamManager, 0);
 				if (index >= 0) {
@@ -95,10 +94,9 @@ export default {
 				}
 			});
 
-			this.getToken(this.mySessionId).then(token => {
+			this.getToken(this.user.name).then(token => {
 				this.session.connect(token, { clientData: this.user.name })
 					.then(() => {
-
 						let publisher = this.OV.initPublisher(undefined, {
 							audioSource: undefined,
 							videoSource: undefined,
@@ -177,6 +175,6 @@ export default {
 					.catch(error => reject(error.response));
 			});
 		},
-  },
+	},
 };
 </script>
