@@ -7,11 +7,11 @@ body, html {
 
 body {
     margin: 0px;
-    background-color: #222222;
 }
 
 #main-container {
-    height: 100%;
+    height: calc(100vh - 105px);
+    background-color: #222222;
 }
 
 #video-container {
