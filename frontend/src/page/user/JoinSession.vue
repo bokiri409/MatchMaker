@@ -18,15 +18,15 @@
       </div>
     </div>
 
-    <div id="session" class="row" v-if="session">
-		<div id="main-video" class="col-md-6">
+    <div id="session" v-if="session">
+		<div id="main-video">
 			<user-video :stream-manager="mainStreamManager"/>
 		</div>
-		<div id="video-container" class="col-md-6">
+		<div id="video-container">
 			<user-video :stream-manager="publisher"/>
 			<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub"/>
 		</div>
-      <button class="btn btn--back btn--login" @click="leaveSession()">
+      <button id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
         퇴장
       </button>
     </div>
@@ -37,7 +37,7 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '../../components/video/UserVideo';
-import "../../assets/css/user.scss";
+import "../../assets/css/video.css";
 import constants from "../../lib/constants";
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';

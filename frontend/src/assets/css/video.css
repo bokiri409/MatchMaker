@@ -1,0 +1,43 @@
+body, html {
+    height: calc(100vh - 60px);
+}
+.user {
+    height: 100%;
+}
+
+body {
+    margin: 0px;
+    background-color: #222222;
+}
+
+#main-container {
+    height: 100%;
+}
+
+#video-container {
+    position: relative;
+}
+
+#video-container video {
+	position: absolute;
+    bottom: 0px;
+    right: 25px;
+	width: 20%;
+	cursor: pointer;
+}
+
+video {
+	width: 55%;
+	height: auto;
+}
+
+#session {
+    position: relative;
+}
+
+#session #leave-session-btn {
+    position: absolute;
+    top: 0px;
+    right: 25px;
+	width: 20%;
+}
