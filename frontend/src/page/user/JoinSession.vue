@@ -55,7 +55,7 @@ export default {
 			publisher: undefined,
       subscribers: [],
       
-			mySessionId: 'hellohellohello',
+			mySessionId: '127836712',
       user: {
         name: "",
       },
@@ -151,16 +151,9 @@ export default {
     createSession (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions`, JSON.stringify({
-						customSessionId: sessionId,
-					}), {
-						auth: {
-							username: 'OPENVIDUAPP',
-							password: OPENVIDU_SERVER_SECRET,
-						},
-					})
+					.post(`http://localhost:8080/api-sessions/create-session/`, sessionId)
 					.then(response => response.data)
-					.then(data => resolve(data.id))
+					.then(data => resolve(data[0]))
 					.catch(error => {
 						if (error.response.status === 409) {
 							resolve(sessionId);
@@ -178,14 +171,9 @@ export default {
     createToken (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(`${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`, {}, {
-						auth: {
-							username: 'OPENVIDUAPP',
-							password: OPENVIDU_SERVER_SECRET,
-						},
-					})
+					.post(`http://localhost:8080/api-sessions/generate-token/`, sessionId)
 					.then(response => response.data)
-					.then(data => resolve(data.token))
+					.then(data => resolve(data[0]))
 					.catch(error => reject(error.response));
 			});
 		},

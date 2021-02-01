@@ -14,4 +14,14 @@ CREATE TABLE `user` (
   UNIQUE KEY `user_idx_unique_email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+DROP TABLE IF EXISTS `room`;
+
+CREATE TABLE `room` (
+  `roomNo` int NOT NULL AUTO_INCREMENT,
+  `backgroundNo` int DEFAULT NULL,
+  `bgmNo` int DEFAULT NULL,
+  `roomName` varchar(128) DEFAULT NULL,
+  `roomPassword` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`roomNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

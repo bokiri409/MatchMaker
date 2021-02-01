@@ -9,20 +9,20 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 
 @Service
-public class UserService{
+public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public User save(User user){
+    public User save(User user) {
         userDao.save(user);
         return user;
     }
 
-    public User getUserByEmail(String email){
+    public User getUserByEmail(String email) {
         return userDao.getUserByEmail(email);
     }
 
-    public Optional<User> findUserByEmailAndPassword(String email, String password){
+    public Optional<User> findUserByEmailAndPassword(String email, String password) {
         return userDao.findUserByEmailAndPassword(email, password);
     }
 
@@ -35,13 +35,14 @@ public class UserService{
         userDao.save(u);
     }
 
-    public User email_certified_check(User user) {
-		return userDao.getUserByEmailAndCertified(user.getEmail(), user.getCertified());
+    public User emailCertifiedCheck(User user) {
+        return userDao.getUserByEmailAndCertified(user.getEmail(), user.getCertified());
     }
-    
-    public void email_certified_update(String email, User user) {
+
+    public void emailCertifiedUpdate(String email) {
         User u = userDao.getUserByEmail(email);
         u.setCertified("Y");
         userDao.save(u);
-	}
+    }
+
 }
