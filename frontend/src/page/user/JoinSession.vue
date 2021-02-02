@@ -45,6 +45,8 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
+const SPRING_TEST_URL = "http://localhost:8080/";
+
 export default {
 	data: () => {
 		return {
@@ -119,37 +121,26 @@ export default {
 					});
 			});
 
-      window.addEventListener('beforeunload', this.leaveSession)
+      		window.addEventListener('beforeunload', this.leaveSession)
       
-    },
-    leaveSession: function() {
-      if (this.session) this.session.disconnect();
-
-			this.session = undefined;
-			this.mainStreamManager = undefined;
-			this.publisher = undefined;
-			this.subscribers = [];
-			this.OV = undefined;
-
-			window.removeEventListener('beforeunload', this.leaveSession);
-    },
+    	},
+		
+		/**
+		 * 쓸지도몰라서
+		 */
+			// updateMainVideoStreamManager (stream) {
+			// 	if (this.mainStreamManager === stream) return;
+			// 	this.mainStreamManager = stream;
+		// },
+		
+		getToken (mySessionId) {
+			return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
+		},
     
-    /**
-     * 쓸지도몰라서
-     */
-		// updateMainVideoStreamManager (stream) {
-		// 	if (this.mainStreamManager === stream) return;
-		// 	this.mainStreamManager = stream;
-    // },
-    
-	getToken (mySessionId) {
-		return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
-    },
-    
-    createSession (sessionId) {
+		createSession (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(`http://localhost:8080/api-sessions/create-session/`, sessionId)
+					.post(SPRING_TEST_URL + `api-sessions/create-session/`, sessionId)
 					.then(response => response.data)
 					.then(data => resolve(data[0]))
 					.catch(error => {
@@ -164,17 +155,37 @@ export default {
 						}
 					});
 			});
-    },
+		},
     
-    createToken (sessionId) {
+		createToken (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(`http://localhost:8080/api-sessions/generate-token/`, sessionId)
+					.post(SPRING_TEST_URL + `api-sessions/generate-token/`, sessionId)
 					.then(response => response.data)
 					.then(data => resolve(data[0]))
 					.catch(error => reject(error.response));
 			});
 		},
+
+		leaveSession: function() {
+			axios
+				.post(SPRING_TEST_URL + `api-sessions/remove-user/`, sessionId)
+				.then(response => {
+					if(response.status == HttpStatus.OK){
+						if (this.session) this.session.disconnect();
+						
+						this.session = undefined;
+						this.mainStreamManager = undefined;
+						this.publisher = undefined;
+						this.subscribers = [];
+						this.OV = undefined;
+
+						window.removeEventListener('beforeunload', this.leaveSession);
+					}
+				})
+				.catch(error => reject(error.response));
+		},
 	},
+
 };
 </script>
