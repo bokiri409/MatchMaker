@@ -169,11 +169,10 @@ export default {
 
 		leaveSession: function() {
 			axios
-				.post(SPRING_TEST_URL + `api-sessions/remove-user/`, sessionId)
+				.post(SPRING_TEST_URL + `api-sessions/remove-user/`, this.user.name)
 				.then(response => {
-					if(response.status == HttpStatus.OK){
-						if (this.session) this.session.disconnect();
-						
+					if(response.status == 200){
+												
 						this.session = undefined;
 						this.mainStreamManager = undefined;
 						this.publisher = undefined;
@@ -183,7 +182,7 @@ export default {
 						window.removeEventListener('beforeunload', this.leaveSession);
 					}
 				})
-				.catch(error => reject(error.response));
+				.catch(error => console.warn(error.response));
 		},
 	},
 
