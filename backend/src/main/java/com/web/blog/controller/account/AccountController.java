@@ -43,12 +43,11 @@ public class AccountController {
 
     String success = "success";
 
-    @GetMapping("/account/login")
+    @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
-    public Object login(@RequestParam(required = true) final String email,
-            @RequestParam(required = true) final String password) {
+    public Object login(@RequestBody User user) {
 
-        Optional<User> userOpt = userDao.findUserByEmailAndPassword(email, password);
+        Optional<User> userOpt = userDao.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
 
         ResponseEntity response = null;
 
@@ -62,7 +61,7 @@ public class AccountController {
             result.object = u;
             response = new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            response = new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
         return response;
