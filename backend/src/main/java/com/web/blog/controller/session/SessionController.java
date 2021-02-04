@@ -63,7 +63,8 @@ public class SessionController {
         if (this.roomIdSession.get(roomId) != null) {
             // 이미 이 방에 유효한 세션이 있다면
             // 새로운 세션을 만들 필요가 없음
-            return new ResponseEntity<>(HttpStatus.OK);
+            responseJson.put(0, roomId);
+            return new ResponseEntity<>(responseJson, HttpStatus.OK);
         } else {
             try {
                 Session session = this.openVidu.createSession();

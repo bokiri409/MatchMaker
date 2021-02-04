@@ -23,8 +23,7 @@
 			<user-video :stream-manager="mainStreamManager"/>
 		</div>
 		<div id="video-container">
-			<user-video :stream-manager="publisher"/>
-			<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub"/>
+			<user-video :stream-manager="subStreamManager" @click="swapMainVideoStreamManager()"/>
 		</div>
       <button id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
         퇴장
@@ -55,7 +54,7 @@ export default {
 			mainStreamManager: undefined,
 			session: undefined,
 			publisher: undefined,
-			subscribers: [],
+			subStreamManager: undefined,
 			mySessionId: undefined,
 			user: {
 				name: "",
@@ -85,15 +84,15 @@ export default {
 			// stream 생성 시 session에 해당 stream을 subscriber로	
 			this.session.on('streamCreated', ({ stream }) => {
 				const subscriber = this.session.subscribe(stream);
-				this.subscribers.push(subscriber);
+				this.subStreamManager = subscriber;
 			});
 			
 			// stream 제거 시 session에서 해당 stream에 해당하는 subscriber 삭제
 			this.session.on('streamDestroyed', ({ stream }) => {
-				const index = this.subscribers.indexOf(stream.streamManager, 0);
-				if (index >= 0) {
-					this.subscribers.splice(index, 1);
-				}
+				// const index = this.subscribers.indexOf(stream.streamManager, 0);
+				// if (index >= 0) {
+				// 	this.subscribers.splice(index, 1);
+				// }
 			});
 
 			this.getToken(this.user.name).then(token => {
@@ -107,14 +106,15 @@ export default {
 							resolution: '640x480', // 해상도
 							frameRate: 30,
 							insertMode: 'APPEND',	 // target element에 추가되는 방식 (target element = 'video-container')
-							mirror: false       	 // 거울모드
+							mirror: false,       	 // 거울모드
 						});
 
 						this.mainStreamManager = publisher;
-            			this.publisher = publisher;
-            
+            			//this.publisher = publisher;
+						
            				 // 송출
-						this.session.publish(this.publisher);
+						this.session.publish(this.mainStreamManager);
+
 					})
 					.catch(error => {
 						console.log('There was an error connecting to the session:', error.code, error.message);
@@ -125,13 +125,11 @@ export default {
       
     	},
 		
-		/**
-		 * 쓸지도몰라서
-		 */
-			// updateMainVideoStreamManager (stream) {
-			// 	if (this.mainStreamManager === stream) return;
-			// 	this.mainStreamManager = stream;
-		// },
+		swapMainVideoStreamManager () {
+			let tempStream = this.mainStreamManager;
+			this.mainStreamManager = this.subStreamManager;
+			this.subStreamManager = tempStream;
+		},
 		
 		getToken (mySessionId) {
 			return this.createSession(mySessionId).then(sessionId => this.createToken(sessionId));
@@ -172,11 +170,11 @@ export default {
 				.post(SPRING_TEST_URL + `api-sessions/remove-user/`, this.user.name)
 				.then(response => {
 					if(response.status == 200){
-												
+
 						this.session = undefined;
 						this.mainStreamManager = undefined;
 						this.publisher = undefined;
-						this.subscribers = [];
+						this.subStreamManager = undefined;
 						this.OV = undefined;
 
 						window.removeEventListener('beforeunload', this.leaveSession);
