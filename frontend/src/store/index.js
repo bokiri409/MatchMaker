@@ -29,10 +29,10 @@ export default new Vuex.Store({
   },
   actions: {
     LOGIN(context, user) {
-      return axios.get("http://localhost:8080/account/login?email=" 
-      + user.email + "&password=" + user.password)
+      return axios.post("http://localhost:8080/account/login", user)
       .then((response) => {
           context.commit('LOGIN', response.data);
+          console.log("로그인");
       })
     },
     LOGOUT(context) {
