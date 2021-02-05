@@ -6,6 +6,8 @@ import java.util.Random;
 import javax.validation.Valid;
 
 import com.web.blog.dao.user.UserDao;
+import com.web.blog.security.JwtAuthToken;
+import com.web.blog.service.user.LoginService;
 import com.web.blog.service.user.UserService;
 import com.web.blog.model.BasicResponse;
 import com.web.blog.model.user.SignupRequest;
@@ -40,6 +42,8 @@ public class AccountController {
     UserDao userDao;
     @Autowired
     UserService userService;
+    @Autowired
+    LoginService loginService;
 
     String success = "success";
 
@@ -49,22 +53,23 @@ public class AccountController {
 
         Optional<User> userOpt = userDao.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
 
-        ResponseEntity response = null;
-
         if (userOpt.isPresent()) {
             final BasicResponse result = new BasicResponse();
             result.status = true;
-            result.data = success;
+
+            // JWT Auth Token 생성하고 result.data에 저장
+            JwtAuthToken jwtAuthToken = (JwtAuthToken) loginService.createAuthToken(userOpt.get());
+            result.data = jwtAuthToken.getToken();
+
             User u = new User();
             u.setEmail(userOpt.get().getEmail());
             u.setNickname(userOpt.get().getNickname());
             result.object = u;
-            response = new ResponseEntity<>(result, HttpStatus.OK);
+            return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-            response = new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        return response;
     }
 
     @PostMapping("/account/signup")
