@@ -25,6 +25,7 @@ import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.OpenViduRole;
 import io.openvidu.java.client.Session;
 import io.openvidu.java.client.TokenOptions;
+import io.openvidu.java.client.KurentoOptions;
 
 
 @CrossOrigin(origins = { "http://localhost:8081" })
@@ -63,7 +64,8 @@ public class SessionController {
         if (this.roomIdSession.get(roomId) != null) {
             // 이미 이 방에 유효한 세션이 있다면
             // 새로운 세션을 만들 필요가 없음
-            return new ResponseEntity<>(HttpStatus.OK);
+            responseJson.put(0, roomId);
+            return new ResponseEntity<>(responseJson, HttpStatus.OK);
         } else {
             try {
                 Session session = this.openVidu.createSession();
@@ -97,14 +99,24 @@ public class SessionController {
 
 		Session session = this.roomIdSession.get(roomId);
 		OpenViduRole role = OpenViduRole.PUBLISHER;
+        
+        JSONObject responseJson = new JSONObject();
+        
+		// TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
+		// 		.data("SERVER=" + "hello").build();
+        // TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
+        //      .data("SERVER=" + this.user.getLoggedUser().getName()).build();
 
-		JSONObject responseJson = new JSONObject();
-		TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
-				.data("SERVER=" + "hello").build();
-//        TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
-//                .data("SERVER=" + this.user.getLoggedUser().getName()).build();
+        TokenOptions tokenOptions = new TokenOptions.Builder()
+            .role(role)
+            .data("user_data")
+            .kurentoOptions(
+                new KurentoOptions.Builder().allowedFilters(
+                new String[]{"GStreamerFilter", "FaceOverlayFilter", "ChromaFilter"}).build())
+            .build();
+            
 		try {
-			String token = this.roomIdSession.get(roomId).generateToken(tokenOpts);
+            String token = session.generateToken(tokenOptions);
 
 			//this.sessionIdUserIdToken.get(session.getSessionId()).put(this.user.getLoggedUser().getName(), token);
 			responseJson.put(0, token);
@@ -123,7 +135,7 @@ public class SessionController {
 					session = this.openVidu.createSession();
 					this.roomIdSession.put(roomId, session);
 					this.sessionIdUserIdToken.put(session.getSessionId(), new HashMap<>());
-					String token = session.generateToken(tokenOpts);
+					String token = session.generateToken(tokenOptions);
 
 //					this.sessionIdUserIdToken.get(session.getSessionId()).put(this.user.getLoggedUser().getUid(), token);
 					responseJson.put(0, token);
