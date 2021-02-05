@@ -1,16 +1,13 @@
 package com.web.blog.controller.session;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.net.ssl.HttpsURLConnection;
-
 import com.web.blog.dao.room.RoomDao;
-import com.web.blog.model.room.Room;
 import com.web.blog.model.user.AuthenticationRequest;
 
+import io.swagger.annotations.ApiOperation;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,6 +25,7 @@ import io.openvidu.java.client.OpenViduJavaClientException;
 import io.openvidu.java.client.OpenViduRole;
 import io.openvidu.java.client.Session;
 import io.openvidu.java.client.TokenOptions;
+import io.openvidu.java.client.KurentoOptions;
 
 
 @CrossOrigin(origins = { "http://localhost:8081" })
@@ -43,7 +41,7 @@ public class SessionController {
     private AuthenticationRequest user;
 
     private Map<String, Session> roomIdSession = new ConcurrentHashMap<>();
-    private Map<String, Map<String, String>> sessionIdUserIdToken = new ConcurrentHashMap<>();
+    private Map<String, Map<Integer, String>> sessionIdUserIdToken = new ConcurrentHashMap<>();
 
     private String OPENVIDU_URL;
     private String SECRET;
@@ -55,19 +53,19 @@ public class SessionController {
     }
 
     @PostMapping(value = "/create-session")
+    @ApiOperation(value = "세션 생성")
     public ResponseEntity<JSONObject> createSession(@RequestBody String roomId) {
         // if (!this.userIsLogged()) {
         //     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         // }
-
-        //int id_room = Integer.parseInt(roomId);
        
         JSONObject responseJson = new JSONObject();
         
         if (this.roomIdSession.get(roomId) != null) {
-            // If there's already a valid Session object for this lesson,
-            // it is not necessary to ask for a new one
-            return new ResponseEntity<>(HttpStatus.OK);
+            // 이미 이 방에 유효한 세션이 있다면
+            // 새로운 세션을 만들 필요가 없음
+            responseJson.put(0, roomId);
+            return new ResponseEntity<>(responseJson, HttpStatus.OK);
         } else {
             try {
                 Session session = this.openVidu.createSession();
@@ -87,29 +85,40 @@ public class SessionController {
     }
 
     @PostMapping(value = "/generate-token")
+    @ApiOperation(value = "토큰 생성")
 	public ResponseEntity<JSONObject> generateToken(@RequestBody String roomId) {
 
 		// if (!this.userIsLogged()) {
 		// 	return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		// }
 
-        //int id_room = Integer.parseInt(roomId);
-
-		// if (this.roomIdSession.get(id_room) == null) {
-		// 	System.out.println("There's no Session fot this room");
+		// if (this.roomIdSession.get(roomId) == null) {
+		// 	System.out.println("이 방에 대한 세션이 없습니다!");
 		// 	return new ResponseEntity<>(HttpStatus.CONFLICT);
 		// }
 
 		Session session = this.roomIdSession.get(roomId);
 		OpenViduRole role = OpenViduRole.PUBLISHER;
+        
+        JSONObject responseJson = new JSONObject();
+        
+		// TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
+		// 		.data("SERVER=" + "hello").build();
+        // TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
+        //      .data("SERVER=" + this.user.getLoggedUser().getName()).build();
 
-		JSONObject responseJson = new JSONObject();
-		TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
-				.data("SERVER=" + "hello").build();
+        TokenOptions tokenOptions = new TokenOptions.Builder()
+            .role(role)
+            .data("user_data")
+            .kurentoOptions(
+                new KurentoOptions.Builder().allowedFilters(
+                new String[]{"GStreamerFilter", "FaceOverlayFilter", "ChromaFilter"}).build())
+            .build();
+            
 		try {
-			String token = this.roomIdSession.get(roomId).generateToken(tokenOpts);
+            String token = session.generateToken(tokenOptions);
 
-			//this.sessionIdUserIdToken.get(session.getSessionId()).put(0, token);
+			//this.sessionIdUserIdToken.get(session.getSessionId()).put(this.user.getLoggedUser().getName(), token);
 			responseJson.put(0, token);
 			showMap();
 
@@ -118,14 +127,17 @@ public class SessionController {
 			return getErrorResponse(e1);
 		} catch (OpenViduHttpException e2) {
 			if (404 == e2.getStatus()) {
+			    // 유효하지 않은 세션ID (예측하지 못한 유저의 방 나가기)
+                // 세션 오브젝트가 더 이상 유효하지 않음.
+                // 유효하지 않은 세션을 삭제하고 새로운 세션을 만들어 줌.
 				try {
 					this.sessionIdUserIdToken.remove(session.getSessionId());
 					session = this.openVidu.createSession();
 					this.roomIdSession.put(roomId, session);
 					this.sessionIdUserIdToken.put(session.getSessionId(), new HashMap<>());
-					String token = session.generateToken(tokenOpts);
+					String token = session.generateToken(tokenOptions);
 
-					//this.sessionIdUserIdToken.get(session.getSessionId()).put(1, token);
+//					this.sessionIdUserIdToken.get(session.getSessionId()).put(this.user.getLoggedUser().getUid(), token);
 					responseJson.put(0, token);
 					showMap();
 
@@ -138,10 +150,39 @@ public class SessionController {
 			}
 		}
     }
+
+    @PostMapping(value = "/remove-user")
+    @ApiOperation(value = "유저가 방에서 나갈 때 삭제")
+    public ResponseEntity<JSONObject> removeUser(@RequestBody String roomId) throws Exception {
+//        if (!this.userIsLogged()){
+//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+//        }
+
+        if (this.roomIdSession.get(roomId) == null){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        String sessionId = this.roomIdSession.get(roomId).getSessionId();
+//        if (this.sessionIdUserIdToken.get(sessionId).remove(this.user.getLoggedUser().getUid()) != null){
+            // 이 유저는 방을 나감
+            if (this.sessionIdUserIdToken.get(sessionId).isEmpty()) {
+                // 나간 유저가 방에 남은 마지막 유저였다면
+                this.roomIdSession.remove(roomId);
+                this.sessionIdUserIdToken.remove(sessionId);
+            }
+
+            showMap();
+
+            return new ResponseEntity<>(HttpStatus.OK);
+//        } else{
+//            System.out.println("앱 서버에서 문제 발생: 유저가 유효한 토큰을 가지고 있지 않습니다.");
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+    }
     
     private boolean userIsLogged() {
         if (!user.isLoggedUser()) {
-            System.out.println("Not user logged");
+            System.out.println("유저가 로그인 되어있지 않음");
             return false;
         }
         return true;

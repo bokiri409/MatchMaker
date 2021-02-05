@@ -32,7 +32,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int uid;
 
-    @JsonIgnore
+//    @JsonIgnore
     private String password;
     private String email;
     private String nickname;
