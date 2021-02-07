@@ -80,12 +80,7 @@ export default {
         this.$router.push({
           path: "/",
         })
-      )
-      .catch(() => //로그인 실패 시
-        alert("이메일과 비밀번호를 확인해주세요."),
-        this.user.email = '',
-        this.user.password = '',
-      )
+      );
     },
   },
   data: () => {
