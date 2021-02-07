@@ -23,7 +23,7 @@
 			<user-video :stream-manager="mainStreamManager"/>
 		</div>
 		<div id="video-container">
-			<user-video :stream-manager="subStreamManager" @click="swapMainVideoStreamManager()"/>
+			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
 		</div>
       <button id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
         퇴장
@@ -51,10 +51,12 @@ export default {
 		return {
 			constants,
 			OV: undefined,
-			mainStreamManager: undefined,
 			session: undefined,
 			publisher: undefined,
+			mainStreamManager: undefined,
 			subStreamManager: undefined,
+			mainStream: undefined,
+			subStream: undefined,
 			mySessionId: undefined,
 			user: {
 				name: "",
@@ -84,7 +86,9 @@ export default {
 			// stream 생성 시 session에 해당 stream을 subscriber로	
 			this.session.on('streamCreated', ({ stream }) => {
 				const subscriber = this.session.subscribe(stream);
-				this.subStreamManager = subscriber;
+				this.subStream = subscriber;
+				this.mainStreamManager = this.subStream;
+				this.subStreamManager = this.mainStream;
 			});
 			
 			// stream 제거 시 session에서 해당 stream에 해당하는 subscriber 삭제
@@ -98,7 +102,8 @@ export default {
 			this.getToken(this.user.name).then(token => {
 				this.session.connect(token, { clientData: this.user.name })
 					.then(() => {
-						let publisher = this.OV.initPublisher(undefined, {
+						
+						let publisher = this.OV.initPublisher(this.mainStreamManager, {
 							audioSource: undefined,
 							videoSource: undefined,
 							publishAudio: true,
@@ -107,13 +112,29 @@ export default {
 							frameRate: 30,
 							insertMode: 'APPEND',	 // target element에 추가되는 방식 (target element = 'video-container')
 							mirror: false,       	 // 거울모드
+
+							filter: {
+								type: 'GStreamerFilter',
+								options: {
+									command: 'videoflip method=vertical-flip'
+									// command:{
+									// 	window: {
+									// 	topRightCornerX: 0,
+									// 	topRightCornerY: 0,
+									// 	width: 50,
+									// 	height: 50
+									// },
+									// backgroundImage: 'https://www.maxpixel.net/static/photo/1x/Cool-Blue-Liquid-Lake-Abstract-Background-Clear-316144.jpg'
+								}
+							}
 						});
 
-						this.mainStreamManager = publisher;
-            			//this.publisher = publisher;
-						
+						this.mainStream = publisher;
+						this.subStreamManager = this.mainStream;
+						//this.mainStreamManager = this.mainStream;
+
            				 // 송출
-						this.session.publish(this.mainStreamManager);
+						this.session.publish(this.mainStream);
 
 					})
 					.catch(error => {
@@ -126,9 +147,6 @@ export default {
     	},
 		
 		swapMainVideoStreamManager () {
-			let tempStream = this.mainStreamManager;
-			this.mainStreamManager = this.subStreamManager;
-			this.subStreamManager = tempStream;
 		},
 		
 		getToken (mySessionId) {
