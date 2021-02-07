@@ -52,3 +52,59 @@ body {
     right: 25px;
 	width: 20%;
 }
+
+#session #filter-modal-btn {
+    position: absolute;
+    top: 0px;
+    left: 25px;
+	width: 20%;
+}
+
+#session .vm--modal{
+    position: relative;
+    text-align: center;
+    padding-left: 15px;
+}
+
+#session .vm--modal p{
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    font-size: 15pt;
+    padding-top: 10px;
+    border-bottom: solid;
+    border-bottom-width: 1px;
+    border-bottom-color: #DDDDDD;
+    top: 0px;
+    left: 0px;
+}
+#session .vm--modal section{
+    position: absolute;
+    width: 100%;
+    top: 60px;
+    left: 0px;
+    text-align: left;
+}
+
+#session .vm--modal input{
+    width: 12px;
+    height: 12px;
+    background-color: initial;
+    cursor: default;
+    appearance: radio;
+    box-sizing: border-box;
+    margin: 3px 5px 10px 10px;
+    padding: initial;
+    border: initial;
+}
+
+#session .vm--modal #modal-hide{
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    border-top: solid;
+    border-top-width: 1px;
+    border-top-color: #DDDDDD;
+    bottom: 0px;
+    left: 0px;
+}

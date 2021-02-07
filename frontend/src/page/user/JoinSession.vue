@@ -19,15 +19,27 @@
     </div>
 
     <div id="session" v-if="session">
+		<button id="filter-modal-btn" class="btn btn--back btn--login" @click="showFilterModal()">
+    		필터 적용하기
+    	</button>
+		<modal name="filter-modal">
+			<p>적용할 필터 선택</p>
+			<section>
+			<template v-for="fo in filterOptions">
+				<input type="radio" v-model="filter" :id="fo.id" :value="fo.value" :key="fo.id">{{fo.id}}
+  			</template>
+			</section>
+			<button id="modal-hide" @click="hideFilterModal()">OK</button>
+		</modal>
 		<div id="main-video">
 			<user-video :stream-manager="mainStreamManager"/>
 		</div>
 		<div id="video-container">
 			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
 		</div>
-      <button id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
-        퇴장
-      </button>
+    	<button id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
+    		퇴장
+    	</button>
     </div>
   </div>
 </template>
@@ -58,6 +70,10 @@ export default {
 			mainStream: undefined,
 			subStream: undefined,
 			mySessionId: undefined,
+			filter: undefined,
+			isFilter: false,
+			filterOptions: [{id: 'grayscale', value: 'Grayscale'}, {id: 'rotation', value: 'Rotation'}, {id: 'faceoverlay', value: 'Faceoverlay'}, {id: 'videobox', value: 'Videobox'},
+							{id: 'text', value: 'Text'}, {id: 'time', value: 'Time'}, {id: 'clock', value: 'Clock'},  {id: 'noFilter', value: 'NoFilter'},],
 			user: {
 				name: "",
 			},
@@ -112,21 +128,6 @@ export default {
 							frameRate: 30,
 							insertMode: 'APPEND',	 // target element에 추가되는 방식 (target element = 'video-container')
 							mirror: false,       	 // 거울모드
-
-							filter: {
-								type: 'GStreamerFilter',
-								options: {
-									command: 'videoflip method=vertical-flip'
-									// command:{
-									// 	window: {
-									// 	topRightCornerX: 0,
-									// 	topRightCornerY: 0,
-									// 	width: 50,
-									// 	height: 50
-									// },
-									// backgroundImage: 'https://www.maxpixel.net/static/photo/1x/Cool-Blue-Liquid-Lake-Abstract-Background-Clear-316144.jpg'
-								}
-							}
 						});
 
 						this.mainStream = publisher;
@@ -200,6 +201,78 @@ export default {
 				})
 				.catch(error => console.warn(error.response));
 		},
+
+		// filter 관련 함수
+		
+		showFilterModal () {
+            this.$modal.show('filter-modal');
+		},
+		
+        hideFilterModal () {
+			this.$modal.hide('filter-modal');
+			this.applyFilter();
+		},
+		
+		applyFilter() {
+			var filterOption = { type: '', options: {} };
+			var type = this.filter;
+
+			this.removeFilter();
+			switch (type) {
+				case 'Grayscale':
+					filterOption.type = 'GStreamerFilter';
+					filterOption.options = { "command": "videobalance saturation=0.0" };
+					break;
+				case 'Rotation':
+					filterOption.type = 'GStreamerFilter';
+					filterOption.options = { "command": "videoflip method=vertical-flip" };
+					break;
+				case 'Faceoverlay':
+					filterOption.type = 'FaceOverlayFilter';
+					filterOption.options = {};
+					break;
+				case 'Videobox':
+					filterOption.type = 'GStreamerFilter';
+					filterOption.options = { "command": "videobox fill=black top=-30 bottom=-30 left=-30 right=-30" };
+					break;
+				case 'Text':
+					filterOption.type = 'GStreamerFilter';
+					filterOption.options = { "command": 'textoverlay text="Embedded text!" valignment=top halignment=right font-desc="Cantarell 25" draw-shadow=false' };
+					break;
+				case 'Time':
+					filterOption.type = 'GStreamerFilter';
+					filterOption.options = { "command": 'timeoverlay valignment=bottom halignment=right font-desc="Sans, 20"' };
+					break;
+				case 'Clock':
+					filterOption.type = 'GStreamerFilter';
+					filterOption.options = { "command": 'clockoverlay valignment=bottom halignment=right shaded-background=true font-desc="Sans, 20"' };
+					break;
+			}
+			if(type != 'NoFilter'){
+				this.isFilter = true;
+
+				this.mainStream.stream.applyFilter(filterOption.type, filterOption.options)
+					.then(f => {
+						if (f.type === 'FaceOverlayFilter') {
+							f.execMethod(
+								"setOverlayedImage",
+								{
+									"uri": "https://cdn.pixabay.com/photo/2017/09/30/09/29/cowboy-hat-2801582_960_720.png",
+									"offsetXPercent": "-0.1F",
+									"offsetYPercent": "-0.8F",
+									"widthPercent": "1.5F",
+									"heightPercent": "1.0F"
+								});
+						}
+					});
+			}
+		},
+
+		removeFilter() {
+			if(this.isFilter)
+				this.mainStream.stream.removeFilter();
+			this.isFilter = false;
+		}
 	},
 
 };
