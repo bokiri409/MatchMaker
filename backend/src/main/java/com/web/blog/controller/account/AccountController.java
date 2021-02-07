@@ -13,6 +13,7 @@ import com.web.blog.model.BasicResponse;
 import com.web.blog.model.user.SignupRequest;
 import com.web.blog.model.user.User;
 
+import com.web.blog.utils.EncryptionUtils;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,8 +51,8 @@ public class AccountController {
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
     public Object login(@RequestBody User user) {
-
-        Optional<User> userOpt = userDao.findUserByEmailAndPassword(user.getEmail(), user.getPassword());
+        String encPassword = EncryptionUtils.encryptSHA256(user.getPassword());
+        Optional<User> userOpt = userDao.findUserByEmailAndPassword(user.getEmail(), encPassword);
 
         if (userOpt.isPresent()) {
             final BasicResponse result = new BasicResponse();
@@ -91,7 +92,10 @@ public class AccountController {
             User user = new User();
             user.setEmail(request.getEmail());
             user.setNickname(request.getNickname());
-            user.setPassword(request.getPassword());
+
+            String encPassword = EncryptionUtils.encryptSHA256(request.getPassword());
+            user.setPassword(encPassword);
+
             user.setCertified(certifiedKey());
             userService.save(user);
             result.object = user;
@@ -106,6 +110,9 @@ public class AccountController {
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = success;
+
+        String encPassword = EncryptionUtils.encryptSHA256(user.getPassword());
+        user.setPassword(encPassword);
         userService.updateByEmail(user.getEmail(), user);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
