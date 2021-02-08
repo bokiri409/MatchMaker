@@ -134,7 +134,8 @@ export default {
 						this.subStreamManager = this.mainStream;
 						//this.mainStreamManager = this.mainStream;
 
-           				 // 송출
+						// 송출
+						this.mainStream.subscribeToRemote();
 						this.session.publish(this.mainStream);
 
 					})
@@ -257,10 +258,10 @@ export default {
 							f.execMethod(
 								"setOverlayedImage",
 								{
-									"uri": "https://cdn.pixabay.com/photo/2017/09/30/09/29/cowboy-hat-2801582_960_720.png",
+									"uri": "http://clipart-library.com/images_k/dogs-transparent-background/dogs-transparent-background-15.png",
 									"offsetXPercent": "-0.1F",
 									"offsetYPercent": "-0.8F",
-									"widthPercent": "1.5F",
+									"widthPercent": "1.0F",
 									"heightPercent": "1.0F"
 								});
 						}
