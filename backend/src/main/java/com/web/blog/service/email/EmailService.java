@@ -6,6 +6,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.util.Random;
+
 @Service
 public class EmailService {
 	
@@ -25,5 +27,19 @@ public class EmailService {
     	helper.setText(message, true); //ture넣을경우 html
 
         javaMailSender.send(mimeMessage);
+    }
+
+    public String certifiedKey() {
+        Random random = new Random();
+        StringBuilder sb = new StringBuilder();
+        int num = 0;
+
+        do {
+            num = random.nextInt(75) + 48;
+            if ((num >= 48 && num <= 57) || (num >= 65 && num <= 90) || (num >= 97 && num <= 122)) {
+                sb.append((char) num);
+            }
+        } while (sb.length() < 10);
+        return sb.toString();
     }
 }
