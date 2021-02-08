@@ -1,36 +1,41 @@
 <template>
-  <div class="user" id="login">
-    <div class="wrapC table">
-      <div class="middle">
-        <h1>SS_log</h1>
-        <div class="input-wrap">
-          <input
-            v-model="user.email"
-            id="email"
-            placeholder="이메일을 입력해주세요"
-            type="text"
-          />
-        </div>
-        <div class="input-wrap">
-          <input
-            v-model="user.password"
-            type="password"
-            id="password"
-            placeholder="영문, 숫자 혼용 8자 이상"
-          />
-        </div>
-        <button class="btn btn--back btn--login" @click="checkHandler()">
-          로그인 하기
-        </button>
-        <div class="add-option">
-          <div class="wrap">
-            <p>아직 회원이 아니신가요?</p>
-            <router-link
-              v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
-              class="btn--text"
-            >
-              회원가입
-            </router-link>
+  <div id="container">
+    <div class="user" id="login">
+      <div class="wrapC table">
+        <div class="middle">
+          <h1>로그인</h1>
+          <div class="input-wrap">
+            <label for="email">Email address</label>
+            <input
+              v-model="user.email"
+              id="email"
+              placeholder="이메일을 입력해주세요"
+              type="text"
+            />
+          </div>
+          <div class="input-wrap">
+            <label for="password">Password</label>
+            <input
+              v-model="user.password"
+              type="password"
+              id="password"
+              placeholder="영문, 숫자 혼용 8자 이상"
+            />
+          </div>
+          <a class="forgot-password" href="#">Forgot password ?</a>
+          <button class="btn btn--back btn--login" @click="checkHandler()">
+            로그인
+          </button>
+          <div class="add-option">
+            <div class="wrap">
+              <p>아직 회원이 아니신가요?</p>
+              <router-link
+                v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
+                class="btn--text"
+              >
+                회원가입
+              </router-link>
+            </div>
           </div>
         </div>
       </div>
@@ -42,6 +47,7 @@
 import "../../assets/css/user.scss";
 import constants from "../../lib/constants";
 
+
 export default {
   components: {},
   created() {},
@@ -51,6 +57,7 @@ export default {
       let err = true;
       let msg = "";
 
+      //에러메세지 출력 - 이메일, 패스워드 입력 비었을 때
       !this.user.email && ((msg = "이메일을 입력해주세요"), (err = false));
       err &&
         !this.user.password &&
@@ -61,7 +68,7 @@ export default {
         (err = false));
 
       if (!err) alert(msg);
-      else this.login();
+      else this.login(); //err안걸리면 login함수 실행
     },
     validEmail: function(email) {
       // 이메일 형식 체크
@@ -73,6 +80,11 @@ export default {
         this.$router.push({
           path: "/",
         })
+      )
+      .catch(() =>
+        alert("이메일과 비밀번호를 확인해주세요."),
+        this.user.email = '',
+        this.user.password = '',
       );
     },
   },
