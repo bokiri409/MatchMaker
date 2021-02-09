@@ -1,11 +1,14 @@
 package com.web.blog.model.room;
 
+import com.web.blog.model.background.Background;
+import com.web.blog.model.bgm.Bgm;
+import com.web.blog.model.user.User;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Data
@@ -14,10 +17,19 @@ import javax.persistence.Id;
 public class Room {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int roomNo;
-    private int backgroundNo;
-    private int bgmNo;
+
+    @OneToOne
+    @JoinColumn(name = "backgroundNo")
+    private Background background;
+    @OneToOne
+    @JoinColumn(name = "bgmNo")
+    private Bgm bgm;
+
+    @ManyToMany
+    private Set<User> attenders;
 
     private String roomName;
-    private String roomPassword;
+    private String roomURL;
 }
