@@ -22,7 +22,7 @@
     <base-btn
       class="ml-3"
       large
-      href="http://localhost:8080/#/user/join"
+      href="http://localhost:8081/#/user/join"
       color="#79b4d9"
     >
       Sign Up
@@ -32,7 +32,7 @@
     <base-btn
       class="ml-3"
       large
-      href="http://localhost:8080/#/user/login"
+      href="http://localhost:8081/#/user/login"
       color="#79b4d9"
     >
       Login
