@@ -12,6 +12,9 @@ import MyPage from "../page/user/MyPage.vue";
 // 포스트
 import List from "../page/post/List.vue";
 
+// 메인 페이지
+import View from "../components/common/View.vue";
+
 Vue.use(Router);
 
 export default new Router({
@@ -39,10 +42,16 @@ export default new Router({
       component: MyPage,
     },
     // 포스트
+    // {
+    //   path: "/",
+    //   name: constants.URL_TYPE.POST.MAIN,
+    //   component: List,
+    // },
+    // 메인 페이지
     {
       path: "/",
-      name: constants.URL_TYPE.POST.MAIN,
-      component: List,
+      name: constants.URL_TYPE.COMMON.VIEW,
+      component: View,
     },
   ],
 });

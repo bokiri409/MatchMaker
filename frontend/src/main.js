@@ -3,13 +3,17 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import VModal from 'vue-js-modal'
+import vuetify from './plugins/vuetify';
+import './plugins/base'
+
 
 Vue.use(VModal);
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router, 
+  router,
   store,
+
   created(){
     const userData = localStorage.getItem("userData");
     if (userData) {
@@ -19,7 +23,9 @@ new Vue({
       this.$store.commit('CHECKUSER', userInfo);
     }
   },
-  components: { App }, 
+
+  components: { App },
+  vuetify,
   template: '<App/>'
 })
  
