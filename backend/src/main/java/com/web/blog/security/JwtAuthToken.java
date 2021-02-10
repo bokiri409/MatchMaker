@@ -53,6 +53,9 @@ public class JwtAuthToken implements AuthToken<Claims> {
         } catch (MalformedJwtException e) {
             log.info("Invalid JWT token.");
             throw new CustomJwtRuntimeException(e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT token.");
+            throw new CustomJwtRuntimeException(e);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT token.");
             throw new CustomJwtRuntimeException(e);
@@ -61,6 +64,5 @@ public class JwtAuthToken implements AuthToken<Claims> {
             throw new CustomJwtRuntimeException(e);
         }
     }
-
 
 }
