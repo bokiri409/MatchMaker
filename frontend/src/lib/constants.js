@@ -18,5 +18,8 @@ export default {
     POST: {
       MAIN: "main",
     },
+    COMMON: {
+      VIEW: "view",
+    },
   },
 };
