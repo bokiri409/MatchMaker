@@ -19,6 +19,18 @@
     </div>
 
     <div id="session" v-if="session">
+		<div id="main-video-waiting" v-if="!mainStreamManager">
+			<div>
+				<p>상대방의 연결을 기다리는 중입니다.</p>
+			</div>
+		</div>
+		<div id="main-video" v-if="mainStreamManager">
+			<user-video :stream-manager="mainStreamManager"/>
+		</div>
+		<div id="video-container">
+			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
+		</div>
+
 		<button id="filter-modal-btn" class="btn btn--back btn--login" @click="showFilterModal()">
     		필터 적용하기
     	</button>
@@ -31,17 +43,7 @@
 			</section>
 			<button id="modal-hide" @click="hideFilterModal()">OK</button>
 		</modal>
-		<div id="main-video-waiting" v-if="!mainStreamManager">
-			<div>
-				<p>상대방의 연결을 기다리는 중입니다.</p>
-			</div>
-		</div>
-		<div id="main-video" v-if="mainStreamManager">
-			<user-video :stream-manager="mainStreamManager"/>
-		</div>
-		<div id="video-container">
-			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
-		</div>
+		
     	<button id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
     		퇴장
     	</button>
