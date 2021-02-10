@@ -92,20 +92,10 @@ public class SessionController {
 		// 	return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 		// }
 
-		// if (this.roomIdSession.get(roomId) == null) {
-		// 	System.out.println("이 방에 대한 세션이 없습니다!");
-		// 	return new ResponseEntity<>(HttpStatus.CONFLICT);
-		// }
-
 		Session session = this.roomIdSession.get(roomId);
 		OpenViduRole role = OpenViduRole.PUBLISHER;
         
         JSONObject responseJson = new JSONObject();
-        
-		// TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
-		// 		.data("SERVER=" + "hello").build();
-        // TokenOptions tokenOpts = new TokenOptions.Builder().role(role)
-        //      .data("SERVER=" + this.user.getLoggedUser().getName()).build();
 
         TokenOptions tokenOptions = new TokenOptions.Builder()
             .role(role)
