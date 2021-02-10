@@ -31,7 +31,12 @@
 			</section>
 			<button id="modal-hide" @click="hideFilterModal()">OK</button>
 		</modal>
-		<div id="main-video">
+		<div id="main-video-waiting" v-if="!mainStreamManager">
+			<div>
+				<p>상대방의 연결을 기다리는 중입니다.</p>
+			</div>
+		</div>
+		<div id="main-video" v-if="mainStreamManager">
 			<user-video :stream-manager="mainStreamManager"/>
 		</div>
 		<div id="video-container">
@@ -106,8 +111,8 @@ export default {
 			});
 			
 			// stream 제거 시 session에서 해당 stream에 해당하는 subscriber 삭제
-			this.session.on('streamDestroyed', ({ stream }) => {
-
+			this.session.on('streamDestroyed', ({}) => {
+				this.mainStreamManager = undefined;
 			});
 
 			this.getToken(this.roomId).then(token => {

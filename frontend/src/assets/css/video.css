@@ -25,6 +25,26 @@ body {
     width: 100%;
 }
 
+#main-video-waiting {
+    height: calc(100% - 25px);
+    position: relative;
+}
+
+#main-video-waiting div{
+    position: absolute;
+    width: 45%;
+    top: calc(50% - 22px);
+    left: calc(27.5%);
+    text-align: center;
+}
+
+#main-video-waiting p{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 10px;
+    background-color: #DDDDDD;
+}
+
 #main-video{
     height: calc(100% - 25px);
 }
