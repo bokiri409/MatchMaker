@@ -5,9 +5,9 @@
         <div class="middle">
           <div class="input-wrap">
             <input
-              v-model="user.name"
+              v-model="roomId"
               id="name"
-              placeholder="사용자명을 입력해주세요"
+              placeholder="방 제목을 입력해주세요"
               type="text"
             />
           </div>
@@ -74,9 +74,7 @@ export default {
 			isFilter: false,
 			filterOptions: [{id: 'grayscale', value: 'Grayscale'}, {id: 'rotation', value: 'Rotation'}, {id: 'faceoverlay', value: 'Faceoverlay'}, {id: 'videobox', value: 'Videobox'},
 							{id: 'text', value: 'Text'}, {id: 'time', value: 'Time'}, {id: 'clock', value: 'Clock'},  {id: 'noFilter', value: 'NoFilter'},],
-			user: {
-				name: "",
-			},
+			roomId: "",
 		};
 	},
 	components: {
@@ -89,7 +87,7 @@ export default {
 			let err = true;
 			let msg = "";
 			
-			!this.user.name && ((msg = "사용자명을 입력해주세요"), (err = false));
+			!this.roomId && ((msg = "방 제목을 입력해주세요"), (err = false));
 			
 			if (!err) alert(msg);
 			else this.joinSession();
@@ -109,14 +107,11 @@ export default {
 			
 			// stream 제거 시 session에서 해당 stream에 해당하는 subscriber 삭제
 			this.session.on('streamDestroyed', ({ stream }) => {
-				// const index = this.subscribers.indexOf(stream.streamManager, 0);
-				// if (index >= 0) {
-				// 	this.subscribers.splice(index, 1);
-				// }
+
 			});
 
-			this.getToken(this.user.name).then(token => {
-				this.session.connect(token, { clientData: this.user.name })
+			this.getToken(this.roomId).then(token => {
+				this.session.connect(token, { clientData: this.roomId })
 					.then(() => {
 						
 						let publisher = this.OV.initPublisher(this.mainStreamManager, {
@@ -187,7 +182,7 @@ export default {
 
 		leaveSession: function() {
 			axios
-				.post(SPRING_TEST_URL + `api-sessions/remove-user/`, this.user.name)
+				.post(SPRING_TEST_URL + `api-sessions/remove-user/`, this.roomId)
 				.then(response => {
 					if(response.status == 200){
 
