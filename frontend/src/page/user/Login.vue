@@ -43,7 +43,7 @@
   </div>
 </template>-->
 <template>
-    <v-container fill-height style="max-width: 400px;">
+    <v-container fill-height style="max-width: 400px;" fluid>
         <v-layout align-center row wrap>
             <v-flex xs10>
 <!--                <v-card class="elevation-12">-->
@@ -55,13 +55,15 @@
                 >
                     <v-img
                         contain
-                        src="../../assets/img/login/user.png"
-                        max-height="80"
-                        max-width="70"
+                        src="../../assets/img/login/heartbeat2.png"
+                        max-height="150"
+                        max-width="150"
                     ></v-img>
                 </v-row>
                     <v-text-field
                         label="email"
+                        v-model="user.email"
+                        id="email"
                         placeholder="이메일을 입력하세요."
                         filled
                         solo
@@ -70,26 +72,29 @@
                     ></v-text-field>
                     <v-text-field
                         label="password"
-                        v-model="password"
+                        v-model="user.password"
+                        id="password"
                         placeholder="비밀번호를 입력하세요."
                         filled
                         solo
                         rounded
                         dense
-                        :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                        :type="show1 ? 'text' : 'password'"
-                        @click:append="show1 = !show1"
+                        counter
+                        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                        :type="show ? 'text' : 'password'"
+                        @click:append="show = !show"
                     ></v-text-field>
 
                     <v-btn
                         rounded
                         block
                         color="#F2ACC6"
+                        @click="checkHandler()"
                     >
                         login
                     </v-btn>
 
-                <p class="text-center pa-5">
+                <p class="text-center pt-5">
                     아직 회원이 아니신가요?
                 <router-link
                         v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
@@ -100,7 +105,7 @@
                 </p>
 
                 <p class="text-center">
-                    비밀번호를 잊어버렸나요?
+                    <a>비밀번호를 잊어버렸나요?</a>
                 </p>
 <!--                    </div>-->
 <!--                </v-card>-->
@@ -161,6 +166,8 @@ export default {
         email: "",
         password: "",
       },
+    show: false,
+    password: 'Password'
     };
   },
 };
