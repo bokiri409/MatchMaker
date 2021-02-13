@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div id="container">
     <div class="user" id="login">
       <div class="wrapC table">
@@ -23,7 +23,7 @@
             />
           </div>
           <a class="forgot-password" href="#">Forgot password ?</a>
-          <button class="btn btn--back btn--login" @click="checkHandler()">
+          <button class="btn btn&#45;&#45;back btn&#45;&#45;login" @click="checkHandler()">
             로그인
           </button>
           <div class="add-option">
@@ -31,7 +31,7 @@
               <p>아직 회원이 아니신가요?</p>
               <router-link
                 v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
-                class="btn--text"
+                class="btn&#45;&#45;text"
               >
                 회원가입
               </router-link>
@@ -41,6 +41,77 @@
       </div>
     </div>
   </div>
+</template>-->
+<template>
+    <v-container fill-height style="max-width: 400px;" fluid>
+        <v-layout align-center row wrap>
+            <v-flex xs10>
+<!--                <v-card class="elevation-12">-->
+<!--                    <div class="pa-10">-->
+                <v-row
+                    class="fill-height ma-0 pa-7"
+                    align="center"
+                    justify="center"
+                >
+                    <v-img
+                        contain
+                        src="../../assets/img/login/heartbeat2.png"
+                        max-height="150"
+                        max-width="150"
+                    ></v-img>
+                </v-row>
+                    <v-text-field
+                        label="email"
+                        v-model="user.email"
+                        id="email"
+                        placeholder="이메일을 입력하세요."
+                        filled
+                        solo
+                        rounded
+                        dense
+                    ></v-text-field>
+                    <v-text-field
+                        label="password"
+                        v-model="user.password"
+                        id="password"
+                        placeholder="비밀번호를 입력하세요."
+                        filled
+                        solo
+                        rounded
+                        dense
+                        counter
+                        :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
+                        :type="show ? 'text' : 'password'"
+                        @click:append="show = !show"
+                    ></v-text-field>
+
+                    <v-btn
+                        rounded
+                        block
+                        color="#F2ACC6"
+                        @click="checkHandler()"
+                    >
+                        login
+                    </v-btn>
+
+                <p class="text-center pt-5">
+                    아직 회원이 아니신가요?
+                <router-link
+                        v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
+                        class="btn&#45;&#45;text"
+                >
+                    sign up
+                </router-link>
+                </p>
+
+                <p class="text-center">
+                    <a>비밀번호를 잊어버렸나요?</a>
+                </p>
+<!--                    </div>-->
+<!--                </v-card>-->
+            </v-flex>
+        </v-layout>
+    </v-container>
 </template>
 
 <script>
@@ -95,6 +166,8 @@ export default {
         email: "",
         password: "",
       },
+    show: false,
+    password: 'Password'
     };
   },
 };
