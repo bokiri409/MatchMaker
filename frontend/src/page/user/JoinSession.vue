@@ -166,7 +166,17 @@ export default {
 					.catch(error => {
 						if (error.response.status === 409) {
 							resolve(sessionId);
-						} else {
+						}
+						if (error.response.status === 500) {
+							alert("로그인 시간이 만료되었습니다. 다시 로그인 해주세요.");
+							this.$store.dispatch("LOGOUT", this.user).then(() =>
+									this.$router.push({
+										path: "/",
+									})
+							)
+							.catch(() => {});
+						}
+						else {
 							console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
 							if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {
 								location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
