@@ -220,7 +220,8 @@
       },
       joinHandler: function() {
         axios
-                .post("http://localhost:8080/account/signup", {
+                // .post("http://localhost:8080/account/signup", {
+                .post(this.$api_url + `/account/signup`, {
                   email: this.email,
                   password: this.password,
                   nickname: this.nickName,
@@ -230,7 +231,8 @@
                   if (response.data.data == "success") {
                     alert("인증 메일이 발송되었습니다. 이메일을 확인해주세요");
                     axios
-                            .post("http://localhost:8080/email/send", {
+                            // .post("http://localhost:8080/email/send", {
+                            .post(this.$api_url + `/email/send`, {
                               email: this.email,
                               password: this.password,
                               nickname: this.nickName,
