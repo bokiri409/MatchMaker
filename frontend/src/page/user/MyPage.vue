@@ -1,4 +1,4 @@
-<template>
+<!--<template>
   <div class="user" id="mypage">
     <div class="wrapC table">
       <div class="middle">
@@ -55,6 +55,103 @@
       </div>
     </div>
   </div>
+</template>-->
+
+<template>
+  <v-container fill-height style="max-width: 400px;">
+    <v-layout align-center row wrap>
+      <v-flex xs10 pb-16>
+        <v-row
+          class="fill-height mt-16 py-10"
+          align="center"
+          justify="center"
+        >
+          <v-img
+            contain
+            src="../../assets/img/mypage/user.png"
+            max-height="130"
+            max-width="130"
+            class="mb-auto"
+          >
+          </v-img>
+        </v-row>
+
+        <v-row>
+          <v-text-field
+              label="email"
+              v-model="email"
+              id="email"
+              placeholder="이메일을 입력하세요."
+              filled
+              solo
+              rounded
+              dense
+              disabled
+          ></v-text-field>
+          <v-text-field
+              label="nickname"
+              v-model="nickname"
+              id="nickname"
+              placeholder="수정할 닉네임을 입력하세요"
+              filled
+              solo
+              rounded
+              dense
+          ></v-text-field>
+          <v-text-field
+              label="password"
+              v-model="password"
+              id="password"
+              placeholder="비밀번호를 입력하세요"
+              filled
+              solo
+              rounded
+              dense
+              :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show1 ? 'text' : 'password'"
+              counter
+              @click:append="show1 = !show1"
+          ></v-text-field>
+          <v-text-field
+              label="password check"
+              v-model="passwordConfirm"
+              id="password-confirm"
+              placeholder="비밀번호를 한번 더 입력하세요"
+              filled
+              solo
+              rounded
+              dense
+              :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+              :type="show2 ? 'text' : 'password'"
+              counter
+              @click:append="show2 = !show2"
+          ></v-text-field>
+        </v-row>
+
+        <v-row class="pb-4">
+          <v-btn
+              rounded
+              block
+              color="#F2ACC6"
+              @click="updateHandler()"
+          >
+            수정하기
+          </v-btn>
+        </v-row>
+        <v-row class="pb-16">
+          <v-btn
+              rounded
+              block
+              color="#F2ACC6"
+              @click="dropOutHandler()"
+          >
+            탈퇴하기
+          </v-btn>
+        </v-row>
+
+      </v-flex>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
@@ -108,6 +205,9 @@ export default {
         .then((response) => {
           if (response.data.data == "success") {
             alert("회원 정보가 수정되었습니다");
+            this.$router.push({
+              path: "/",
+            })
           } else {
             alert(response.data.data);
           }
@@ -125,6 +225,9 @@ export default {
         .then((response) => {
           if (response.data.data == "success") {
             alert("회원 정보가 삭제되었습니다");
+            this.$router.push({
+              path: "/",
+            })
           } else {
             alert(response.data.data);
           }
@@ -143,6 +246,8 @@ export default {
       passwordConfirm: "",
       passwordType: "password",
       passwordConfirmType: "password",
+      show1: false,
+      show2: false
     };
   },
 };
