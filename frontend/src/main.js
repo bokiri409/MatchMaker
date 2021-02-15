@@ -6,8 +6,12 @@ import VModal from 'vue-js-modal'
 import vuetify from './plugins/vuetify';
 import './plugins/base'
 
-Vue.prototype.$api_url = "http:localhost:8080/api";
-// Vue.prototype.$api_url = "http://i4a208.p.ssafy.io:8080/api/";
+export const api_url = "http://localhost:8080/api";
+// export const api_url = "http://i4a208.p.ssafy.io:8080/api";
+Vue.prototype.$api_url = api_url;
+
+// Vue.prototype.$api_url = "http://i4a208.p.ssafy.io:8080/api";
+//   Vue.prototype.$api_url = "http://localhost:8080/api";
 
 Vue.use(VModal);
 /* eslint-disable no-new */
