@@ -6,15 +6,13 @@
     flat
   >
     <v-slide-x-transition>
-      <router-link v-bind:to="{ name: constants.URL_TYPE.COMMON.VIEW }">
-        <v-img
-          :src="require('../../assets/img/matchmaker2.png')"
-          class="shrink ma-0"
-          contain
-          width="250"
-          height="50"
-        />
-      </router-link>
+      <v-img
+        v-if="showLogo"
+        :src="require('@/assets/matchmaker.png')"
+        class="shrink"
+        contain
+        height="50"
+      />
     </v-slide-x-transition>
 
     <v-spacer />
@@ -107,13 +105,7 @@
       onClickLogout() {
         this.$store
                 .dispatch("LOGOUT")
-                // .then(() => this.$router.replace("/").catch(() => {}));
-                .then(() =>
-                    this.$router.push({
-                      path: "/",
-                    })
-                )
-                .catch(() => {});
+                .then(() => this.$router.replace("/").catch(() => {}));
       },
     },
   }
