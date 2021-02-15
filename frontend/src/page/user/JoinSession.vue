@@ -63,8 +63,6 @@ axios.defaults.headers.post['Content-Type'] = 'application/json';
 const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
-const SPRING_TEST_URL = "http://localhost:8080/";
-
 export default {
 	data: () => {
 		return {
@@ -160,7 +158,7 @@ export default {
 		createSession (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(SPRING_TEST_URL + `api-sessions/create-session/`, sessionId)
+					.post(this.$api_url + `api-sessions/create-session/`, sessionId)
 					.then(response => response.data)
 					.then(data => resolve(data[0]))
 					.catch(error => {
@@ -180,7 +178,7 @@ export default {
 		createToken (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(SPRING_TEST_URL + `api-sessions/generate-token/`, sessionId)
+					.post(this.$api_url + `api-sessions/generate-token/`, sessionId)
 					.then(response => response.data)
 					.then(data => resolve(data[0]))
 					.catch(error => reject(error.response));
@@ -189,7 +187,7 @@ export default {
 
 		leaveSession: function() {
 			axios
-				.post(SPRING_TEST_URL + `api-sessions/remove-user/`, this.roomId)
+				.post(this.$api_url + `api-sessions/remove-user/`, this.roomId)
 				.then(response => {
 					if(response.status == 200){
 
