@@ -1,5 +1,5 @@
 <template>
-  <div id="main-container" class="container">
+  <div id="main-container">
     <div class="user" v-if="!session">
       <div class="wrapC table">
         <div class="middle">
