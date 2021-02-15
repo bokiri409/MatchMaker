@@ -29,7 +29,7 @@ export default new Vuex.Store({
       localStorage.setItem("userData", JSON.stringify(userData));
       //token(토큰)을 Axios Header에 추가
       // Axios instance Authorization Header에 JWT Token을 포함
-      axios.defaults.headers.common["x-auth-token"] = `Bearer ${state.token}`;
+      axios.defaults.headers.common["x-auth-token"] = `${state.token}`;
     },
     LOGIN(state, payload) { //로그인 성공 시
         state.email = payload.object.email;
