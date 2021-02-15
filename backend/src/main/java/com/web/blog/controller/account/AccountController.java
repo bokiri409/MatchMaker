@@ -52,7 +52,7 @@ public class AccountController {
 
     String success = "success";
 
-    @PostMapping("/account/login")
+    @PostMapping("/api/account/login")
     @ApiOperation(value = "로그인")
     public Object login(@RequestBody User user) {
         String encPassword = EncryptionUtils.encryptSHA256(user.getPassword());
@@ -77,7 +77,7 @@ public class AccountController {
 
     }
 
-    @PostMapping("/account/signup")
+    @PostMapping("/api/account/signup")
     @ApiOperation(value = "가입하기")
     public Object signUp(@RequestBody @Valid SignupRequest request, @ApiIgnore Errors errors) {
         // 이메일, 닉네임 중복처리 필수
@@ -119,7 +119,7 @@ public class AccountController {
         }
     }
 
-    @PutMapping("/account/update")
+    @PutMapping("/api/account/update")
     @ApiOperation(value = "회원정보수정")
     public Object update(@RequestBody @Valid User user, @ApiIgnore Errors errors) {
         final BasicResponse result = new BasicResponse();
@@ -148,7 +148,7 @@ public class AccountController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @DeleteMapping("/account/delete")
+    @DeleteMapping("/api/account/delete")
     @ApiOperation(value = "회원정보탈퇴")
     public Object delete(@RequestParam(required = true) final String email) {
         final BasicResponse result = new BasicResponse();
