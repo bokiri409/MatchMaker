@@ -1,32 +1,34 @@
 <template>
   <v-app-bar
-    v-scroll="onScroll"
-    :color="!isScrolling ? 'transparent' : 'white'"
-    fixed
-    flat
+          v-scroll="onScroll"
+          :color="!isScrolling ? 'transparent' : 'white'"
+          fixed
+          flat
   >
     <v-slide-x-transition>
-      <v-img
-        v-if="showLogo"
-        :src="require('@/assets/matchmaker.png')"
-        class="shrink"
-        contain
-        height="50"
-      />
+      <router-link v-bind:to="{ name: constants.URL_TYPE.COMMON.VIEW }">
+        <v-img
+                :src="require('../../assets/img/matchmaker2.png')"
+                class="shrink ma-0"
+                contain
+                width="250"
+                height="50"
+        />
+      </router-link>
     </v-slide-x-transition>
 
     <v-spacer />
 
     <div v-if="!getEmail">
       <router-link
-        v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
-        class="btn--text"
-        style="text-decoration: none"
+              v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
+              class="btn--text"
+              style="text-decoration: none"
       >
         <base-btn
-          class="ml-3"
-          large
-          color="#79b4d9"
+                class="ml-3"
+                large
+                color="#79b4d9"
         >
           Sign Up
 
@@ -34,14 +36,14 @@
       </router-link>
 
       <router-link
-        v-bind:to="{ name: constants.URL_TYPE.USER.LOGIN }"
-        class="login-btn"
-        style="text-decoration: none"
+              v-bind:to="{ name: constants.URL_TYPE.USER.LOGIN }"
+              class="login-btn"
+              style="text-decoration: none"
       >
         <base-btn
-          class="ml-3"
-          large
-          color="#79b4d9"
+                class="ml-3"
+                large
+                color="#79b4d9"
         >
           Login
 
@@ -51,20 +53,20 @@
 
     <div v-else>
       <span>{{ getNickname }} 님 환영합니다.</span>
-<!--      <button @click.prevent="onClickLogout">로그아웃</button>-->
-        <base-btn
-          class="ml-3"
-          large
-          color="#79b4d9"
-          @click.prevent="onClickLogout"
-        >
-          Logout
+      <!--      <button @click.prevent="onClickLogout">로그아웃</button>-->
+      <base-btn
+              class="ml-3"
+              large
+              color="#79b4d9"
+              @click.prevent="onClickLogout"
+      >
+        Logout
 
-        </base-btn>
+      </base-btn>
 
       <router-link
-        v-bind:to="{ name: constants.URL_TYPE.USER.MYPAGE }"
-        style="text-decoration: none"
+              v-bind:to="{ name: constants.URL_TYPE.USER.MYPAGE }"
+              style="text-decoration: none"
       >
         <base-btn
                 class="ml-3"
@@ -105,7 +107,13 @@
       onClickLogout() {
         this.$store
                 .dispatch("LOGOUT")
-                .then(() => this.$router.replace("/").catch(() => {}));
+                // .then(() => this.$router.replace("/").catch(() => {}));
+                .then(() =>
+                        this.$router.push({
+                          path: "/",
+                        })
+                )
+                .catch(() => {});
       },
     },
   }
