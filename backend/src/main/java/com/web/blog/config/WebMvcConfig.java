@@ -15,7 +15,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry){
         System.out.println(" 인터셉터 작동! ");
         registry.addInterceptor(authInterceptor)
-                .addPathPatterns("/api-sessions/**")    // token 인증을 거치는 Path
-                .excludePathPatterns("/account/login");    // 제외 Path
+                .addPathPatterns("/api/api-sessions/**", "/api/account/update", "/api/account/delete")    // token 인증을 거치는 Path
+                .excludePathPatterns("/api/account/login");    // 제외 Path
     }
 }
