@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import '../main.js';
+import {api_url} from "../main";
 
 Vue.use(Vuex);
 
@@ -58,10 +60,10 @@ export default new Vuex.Store({
     // 로그인 시도 -> mutations로 넘어감
     LOGIN(context, user) {
       // return axios.post("http://localhost:8080/account/login", user)
-      return axios.post(this.$api_url + `/account/login`, user)
+      return axios.post(api_url + `/account/login`, user)
       .then((response) => { //로그인 성공 시 토큰(data) 반환
-          context.commit('LOGIN', response.data);
-      })
+            context.commit('LOGIN', response.data);
+          })
     },
     LOGOUT(context) {
       context.commit('LOGOUT');
