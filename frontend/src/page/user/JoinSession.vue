@@ -4,6 +4,9 @@
 		<v-container fill-height style="max-width: 400px;" fluid>
         	<v-layout align-center row wrap>
 				<v-flex xs10>
+					<h1>😘💻</h1>
+					<h2>상대방도 기다리고 있습니다!</h2>
+					<base-text>미팅 방을 생성하거나 입장하세요.</base-text>
 					<v-text-field
                         v-model="roomId"
 						label="방 제목을 입력해주세요."
