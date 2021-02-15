@@ -100,7 +100,8 @@ export default {
     },
     updateHandler: function() {
       axios
-        .put("http://localhost:8080/account/update", {
+        // .put("http://localhost:8080/account/update", {
+        .put(this.$api_url + `/account/update`, {
           email: this.$store.state.email,
           nickname: this.nickname,
           password: this.password,
@@ -119,7 +120,8 @@ export default {
     dropOutHandler: function() {
       axios
         .delete(
-          "http://localhost:8080/account/delete?email=" +
+          // "http://localhost:8080/account/delete?email=" +
+          this.$api_url +`/account/delete?email=` +
             this.$store.state.email
         )
         .then((response) => {
