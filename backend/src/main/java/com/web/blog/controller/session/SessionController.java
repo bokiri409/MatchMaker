@@ -52,7 +52,7 @@ public class SessionController {
         this.openVidu = new OpenVidu(OPENVIDU_URL, SECRET);
     }
 
-    @PostMapping(value = "/create-session")
+    @PostMapping(value = "/api/create-session")
     @ApiOperation(value = "세션 생성")
     public ResponseEntity<JSONObject> createSession(@RequestBody String roomId) {
         // if (!this.userIsLogged()) {
@@ -84,7 +84,7 @@ public class SessionController {
         }
     }
 
-    @PostMapping(value = "/generate-token")
+    @PostMapping(value = "/api/generate-token")
     @ApiOperation(value = "토큰 생성")
 	public ResponseEntity<JSONObject> generateToken(@RequestBody String roomId) {
 
@@ -141,7 +141,7 @@ public class SessionController {
 		}
     }
 
-    @PostMapping(value = "/remove-user")
+    @PostMapping(value = "/api/remove-user")
     @ApiOperation(value = "유저가 방에서 나갈 때 삭제")
     public ResponseEntity<JSONObject> removeUser(@RequestBody String roomId) throws Exception {
 //        if (!this.userIsLogged()){
