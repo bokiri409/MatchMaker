@@ -7,15 +7,6 @@ body, html {
     width: 100vw;
 }
 
-.user .middle{
-	position: absolute;
-    top: calc(50% - 37px);
-}
-
-.user #name{
-    background-color: #eeeeee;
-}
-
 body {
     margin: 0px;
 }
