@@ -31,6 +31,7 @@
     </div>
 
     <div id="session" v-if="session">
+		<div id="background-bottom"></div>
 		<div id="main-video-waiting" v-if="!mainStreamManager">
 			<div>
 				<p>상대방의 연결을 기다리는 중입니다.</p>
@@ -284,7 +285,9 @@ export default {
 				.post(this.$api_url + `/api-sessions/remove-user/`, this.roomId)
 				.then(response => {
 					if(response.status == 200){
-
+						
+						this.mainStream = undefined;
+						this.subStream = undefined;
 						this.session = undefined;
 						this.mainStreamManager = undefined;
 						this.publisher = undefined;
