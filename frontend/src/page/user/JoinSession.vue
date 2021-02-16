@@ -31,6 +31,7 @@
     </div>
 
     <div id="session" v-if="session">
+		<div id="background-bottom"></div>
 		<div id="main-video-waiting" v-if="!mainStreamManager">
 			<div>
 				<p>상대방의 연결을 기다리는 중입니다.</p>
@@ -55,8 +56,8 @@
 					solo
 					rounded
 				></v-text-field>
-				<v-btn id="virtual-background-activate-btn">적용하기</v-btn>
-				<v-btn id="virtual-background-delete-btn">해제하기</v-btn>
+				<v-btn id="virtual-background-activate-btn" @click="setVirutalBackground()">적용하기</v-btn>
+				<v-btn id="virtual-background-delete-btn" @click="removeFilter()">해제하기</v-btn>
 			</section>
 			<button class="modal-hide" @click="hideVirtualBackgroundModal()">OK</button>
 		</modal>
@@ -284,7 +285,9 @@ export default {
 				.post(this.$api_url + `/api-sessions/remove-user/`, this.roomId)
 				.then(response => {
 					if(response.status == 200){
-
+						
+						this.mainStream = undefined;
+						this.subStream = undefined;
 						this.session = undefined;
 						this.mainStreamManager = undefined;
 						this.publisher = undefined;
@@ -328,55 +331,86 @@ export default {
 		applyFilter() {
 			var filterOption = { type: '', options: {} };
 			var type = this.filter;
-
-			this.removeFilter();
-			switch (type) {
-				case 'Grayscale':
-					filterOption.type = 'GStreamerFilter';
-					filterOption.options = { "command": "videobalance saturation=0.0" };
-					break;
-				case 'Rotation':
-					filterOption.type = 'GStreamerFilter';
-					filterOption.options = { "command": "videoflip method=vertical-flip" };
-					break;
-				case 'Faceoverlay':
-					filterOption.type = 'FaceOverlayFilter';
-					filterOption.options = {};
-					break;
-				case 'Videobox':
-					filterOption.type = 'GStreamerFilter';
-					filterOption.options = { "command": "videobox fill=black top=-30 bottom=-30 left=-30 right=-30" };
-					break;
-				case 'Text':
-					filterOption.type = 'GStreamerFilter';
-					filterOption.options = { "command": 'textoverlay text="Embedded text!" valignment=top halignment=right font-desc="Cantarell 25" draw-shadow=false' };
-					break;
-				case 'Time':
-					filterOption.type = 'GStreamerFilter';
-					filterOption.options = { "command": 'timeoverlay valignment=bottom halignment=right font-desc="Sans, 20"' };
-					break;
-				case 'Clock':
-					filterOption.type = 'GStreamerFilter';
-					filterOption.options = { "command": 'clockoverlay valignment=bottom halignment=right shaded-background=true font-desc="Sans, 20"' };
-					break;
+			
+			if(this.mainStream === undefined){
+				alert("영상이 없습니다...")
 			}
-			if(type != 'NoFilter'){
-				this.isFilter = true;
+			else{
+				this.removeFilter();
+				switch (type) {
+					case 'Grayscale':
+						filterOption.type = 'GStreamerFilter';
+						filterOption.options = { "command": "videobalance saturation=0.0" };
+						break;
+					case 'Rotation':
+						filterOption.type = 'GStreamerFilter';
+						filterOption.options = { "command": "videoflip method=vertical-flip" };
+						break;
+					case 'Faceoverlay':
+						filterOption.type = 'FaceOverlayFilter';
+						filterOption.options = {};
+						break;
+					case 'Videobox':
+						filterOption.type = 'GStreamerFilter';
+						filterOption.options = { "command": "videobox fill=black top=-30 bottom=-30 left=-30 right=-30" };
+						break;
+					case 'Text':
+						filterOption.type = 'GStreamerFilter';
+						filterOption.options = { "command": 'textoverlay text="Embedded text!" valignment=top halignment=right font-desc="Cantarell 25" draw-shadow=false' };
+						break;
+					case 'Time':
+						filterOption.type = 'GStreamerFilter';
+						filterOption.options = { "command": 'timeoverlay valignment=bottom halignment=right font-desc="Sans, 20"' };
+						break;
+					case 'Clock':
+						filterOption.type = 'GStreamerFilter';
+						filterOption.options = { "command": 'clockoverlay valignment=bottom halignment=right shaded-background=true font-desc="Sans, 20"' };
+						break;
+				}
+				if(type != 'NoFilter'){
+					this.isFilter = true;
 
+					this.mainStream.stream.applyFilter(filterOption.type, filterOption.options)
+						.then(f => {
+							if (f.type === 'FaceOverlayFilter') {
+								f.execMethod(
+									"setOverlayedImage",
+									{
+										"uri": "http://clipart-library.com/images_k/dogs-transparent-background/dogs-transparent-background-15.png",
+										"offsetXPercent": "-0.1F",
+										"offsetYPercent": "-0.8F",
+										"widthPercent": "1.0F",
+										"heightPercent": "1.0F"
+									});
+							}
+						});
+				}
+			}
+		},
+
+		setVirutalBackground(){
+			if(this.mainStream === undefined){
+				alert("영상이 없습니다...")
+			}
+			else{
+				var filterOption = { 
+					type: 'ChromaFilter', 
+					options: {
+						window: {
+							topRightCornerX: 0,
+							topRightCornerY: 0,
+							width: 50,
+							height: 50
+						},
+						backgroundImage: this.virtualBackgroundURL
+					}
+				};
+
+				this.removeFilter();
+
+				this.isFilter = true;
 				this.mainStream.stream.applyFilter(filterOption.type, filterOption.options)
-					.then(f => {
-						if (f.type === 'FaceOverlayFilter') {
-							f.execMethod(
-								"setOverlayedImage",
-								{
-									"uri": "http://clipart-library.com/images_k/dogs-transparent-background/dogs-transparent-background-15.png",
-									"offsetXPercent": "-0.1F",
-									"offsetYPercent": "-0.8F",
-									"widthPercent": "1.0F",
-									"heightPercent": "1.0F"
-								});
-						}
-					});
+				.catch(alert("사용할 수 없는 이미지 URL입니다..."));
 			}
 		},
 
