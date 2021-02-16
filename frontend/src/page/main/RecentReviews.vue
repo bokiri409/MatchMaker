@@ -17,12 +17,6 @@
         <base-heading id="reviews_headertext">
           Recent Reviews
         </base-heading><br>
-
-        <!-- <base-text class="mb-5">
-          Lorem ipsum dolor sit amet, consectetur adipi<br>
-          scin elit. Etiam vulputate augue vel felis gravida<br>
-          porta. Lorem ipsum dolor sit amet.
-        </base-text> -->
       
         <v-card id="review_card">
           <v-container class="pa-2">
@@ -39,8 +33,6 @@
                     <h5>{{ item.content2 }}</h5>
                   </figcaption>
                 </figure>
-              
-              
               </v-carousel-item>
             </v-carousel>
             
@@ -77,10 +69,6 @@
           style="transform: rotate(180deg) translate(-200px, -15%)"
         />
       </v-col>
-
-      
-
-      
     </v-row>
   </section>
 </template>
@@ -98,7 +86,7 @@
         },
         {
           src: require('../../assets/woman2.jpg'),
-          title: '임나리(26), 대학생',
+          title: '임주영(26), 대학생',
           content: '새로운 사람을 직접 만나는 것이 불편했는데,',
           content2: '매치메이커를 통해서 편하게 만날 수 있었습니다.'
         },
@@ -128,8 +116,13 @@
 
 #review_card {
   background-color: #BFADA5;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+#reviews_headertext {
+  color: black; 
 }
 
 @import '../../assets/css/review_style.css';
-/* @import '../../script.js'; */
 </style>

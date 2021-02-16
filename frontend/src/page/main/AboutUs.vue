@@ -59,6 +59,7 @@
             width="750"
             elevation="2"
             rounded
+            id="about_sheet"
           >
             <mdb-container class="mt-5">
 
@@ -82,58 +83,7 @@
                   <mdb-btn outline="primary" rounded size="md" class="ml-4" @click.native="showModal = false">Close</mdb-btn>
                 </mdb-modal-footer>
               </mdb-modal>
-
             </mdb-container>
-
-
-
-
-
-            <!-- <v-row>
-
-              <v-col cols="12" md="6">
-                <figure class="snip1504">
-                  <img src="../../assets/service1.png" alt="sample57">
-                  <figcaption id="about_us_fig">
-                    <h3>Benjamin Evalent</h3>
-                    <h5>좋아요</h5>
-                  </figcaption>
-                </figure>
-              </v-col>
-
-              <v-col cols="12" md="6">
-                <figure class="snip1504">
-                  <img src="../../assets/service1.png" alt="sample57">
-                  <figcaption id="about_us_fig">
-                    <h3>Benjamin Evalent</h3>
-                    <h5>아주 좋아요</h5>
-                  </figcaption>
-                </figure>
-              </v-col>
-            </v-row>
-            <v-row>
-
-              <v-col cols="12" md="6">
-                <figure class="snip1504">
-                  <img src="../../assets/service1.png" alt="sample57">
-                  <figcaption id="about_us_fig">
-                    <h3>Benjamin Evalent</h3>
-                    <h5>진짜루</h5>
-                  </figcaption>
-                </figure>
-              </v-col>
-
-              <v-col cols="12" md="6">
-                <figure class="snip1504">
-                  <img src="../../assets/service1.png" alt="sample57">
-                  <figcaption id="about_us_fig">
-                    <h3>Benjamin Evalent</h3>
-                    <h5>좋아요</h5>
-                  </figcaption>
-                </figure>
-              </v-col>
-            </v-row> -->
-
           </v-sheet>
         </v-row>
       </v-col>
@@ -169,8 +119,6 @@ export default {
 </script>
 
 <style scoped>
-/* @import '../../assets/css/review_style.css'; */
-
 
 #input_url {
   border: 1px solid #79b4d9;
@@ -178,17 +126,21 @@ export default {
 }
 
 #about_us_left {
-    height: 950px;
+  height: 910px;
 }
 
 #about_us_right {
-    background-color: #f7cfdf;
+  background-color: #f7cfdf;
     
 }
 
 #about_us_fig {
   width: 300px;
   height: 300px;
+}
+
+#about_sheet {
+  margin-bottom: 80px;     
 }
 
 .snip1504 {

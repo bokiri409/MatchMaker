@@ -5,11 +5,11 @@ import store from './store'
 import VModal from 'vue-js-modal'
 import vuetify from './plugins/vuetify';
 import './plugins/base'
+
+// mdbvue
 import 'bootstrap-css-only/css/bootstrap.min.css'
 import 'mdbvue/lib/css/mdb.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
-
-
 
 export const api_url = "http://localhost:8080/api";
 // export const api_url = "http://i4a208.p.ssafy.io:8080/api";
