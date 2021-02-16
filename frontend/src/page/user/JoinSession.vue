@@ -42,23 +42,79 @@
 		<div id="video-container">
 			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
 		</div>
-
-		<button id="filter-modal-btn" class="btn btn--back btn--login" @click="showFilterModal()">
-    		필터 적용하기
-    	</button>
-		<modal name="filter-modal">
-			<p>적용할 필터 선택</p>
-			<section>
-			<template v-for="fo in filterOptions">
-				<input type="radio" v-model="filter" :id="fo.id" :value="fo.value" :key="fo.id">{{fo.id}}
-  			</template>
+		
+		<modal name="virtual-background-modal">
+			<p class="modal-title">가상 배경 선택</p>
+			<section style="text-align:center;">
+				<p class="modal-description">적용할 가상 배경 이미지의 url을 입력해주세요.</p>
+				<v-text-field
+                    v-model="virtualBackgroundURL"
+					label="가상 배경 이미지 URL"
+					id="virtualBackgroundURL"
+					filled
+					solo
+					rounded
+				></v-text-field>
+				<v-btn id="virtual-background-activate-btn">적용하기</v-btn>
+				<v-btn id="virtual-background-delete-btn">해제하기</v-btn>
 			</section>
-			<button id="modal-hide" @click="hideFilterModal()">OK</button>
+			<button class="modal-hide" @click="hideVirtualBackgroundModal()">OK</button>
+		</modal>
+
+		<modal name="background-music-modal">
+			<p class="modal-title">배경 음악 선택</p>
+			<v-carousel v-model="backgroundMusic" class="background-music-carousel" height="230" hide-delimiter-background show-arrows-on-hover>
+				<v-carousel-item class="background-music-carousel-item" v-for="(musicTitle, i) in musicTitles" :key="i">
+					<v-sheet :color="colors[i]"	height="100%">
+					<v-row class="fill-height" align="center" justify="center">
+						<div class="display-1">
+							{{ musicTitle }}
+						</div>
+					</v-row>
+					</v-sheet>
+				</v-carousel-item>
+			</v-carousel>
+			<button class="modal-hide" @click="hideBackgroundMusicModal()">OK</button>
+		</modal>
+
+		<modal name="filter-modal">
+			<p class="modal-title">적용할 필터 선택</p>
+			<section>
+				<template v-for="fo in filterOptions">
+					<input type="radio" class="input-radio" v-model="filter" :id="fo.id" :value="fo.value" :key="fo.id">{{fo.id}}
+					<br :key="fo.value"/>
+				</template>
+			</section>
+			<button class="modal-hide" @click="hideFilterModal()">OK</button>
 		</modal>
 		
-    	<button id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
-    		퇴장
-    	</button>
+		<v-fab-transition>
+			<v-btn v-show="!isMenuHidden" id="virtual-background-btn" class="btn btn--back btn--login" @click="showVirtualBackgroundModal()">
+				가상 배경
+			</v-btn>
+		</v-fab-transition>
+		
+		<v-fab-transition>
+			<v-btn v-show="!isMenuHidden" id="background-music-btn" class="btn btn--back btn--login" @click="showBackgroundMusicModal()">
+				배경 음악
+			</v-btn>
+		</v-fab-transition>
+
+		<v-fab-transition>
+			<v-btn v-show="!isMenuHidden" id="filter-modal-btn" class="btn btn--back btn--login" @click="showFilterModal()">
+				필터
+			</v-btn>
+		</v-fab-transition>
+
+		<v-fab-transition>
+			<v-btn v-show="!isMenuHidden" id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
+				퇴장
+			</v-btn>
+		</v-fab-transition>
+
+		<v-btn id="show-menu" @click="isMenuHidden=!isMenuHidden">
+              {{ isMenuHidden ? '메뉴' : '숨기기' }}
+        </v-btn>
     </div>
   </div>
 </template>
@@ -89,9 +145,24 @@ export default {
 			mySessionId: undefined,
 			filter: undefined,
 			isFilter: false,
-			filterOptions: [{id: 'grayscale', value: 'Grayscale'}, {id: 'rotation', value: 'Rotation'}, {id: 'faceoverlay', value: 'Faceoverlay'}, {id: 'videobox', value: 'Videobox'},
-							{id: 'text', value: 'Text'}, {id: 'time', value: 'Time'}, {id: 'clock', value: 'Clock'},  {id: 'noFilter', value: 'NoFilter'},],
+			filterOptions: [{id: '흑백화면', value: 'Grayscale'}, {id: '상하반전', value: 'Rotation'}, {id: '테두리', value: 'Videobox'},
+							{id: '시간 기록', value: 'Time'}, {id: '시계', value: 'Clock'}, {id: '머리 위 강아지', value: 'Faceoverlay'}, {id: '필터 해제하기', value: 'NoFilter'}, ],
 			roomId: "",
+			isMenuHidden: true,
+			virtualBackgroundURL: undefined,
+			backgroundMusic: undefined,
+			colors: [
+				'indigo',
+				'warning',
+				'pink darken-2',
+				'red lighten-1',
+			],
+			musicTitles: [
+				'잔잔한 노래',
+				'분위기 있는 노래',
+				'그냥 적당한 노래',
+				'노래 끄기',
+			],
 		};
 	},
 	components: {
@@ -109,6 +180,7 @@ export default {
 			if (!err) alert(msg);
 			else this.joinSession();
 		},
+	
 		joinSession: function() {
 			this.OV = new OpenVidu();
 			
@@ -223,6 +295,23 @@ export default {
 					}
 				})
 				.catch(error => console.warn(error.response));
+		},
+
+		showVirtualBackgroundModal () {
+            this.$modal.show('virtual-background-modal');
+		},
+		
+        hideVirtualBackgroundModal () {
+			this.$modal.hide('virtual-background-modal');
+		},
+
+		showBackgroundMusicModal () {
+            this.$modal.show('background-music-modal');
+		},
+		
+        hideBackgroundMusicModal () {
+			this.$modal.hide('background-music-modal');
+			alert(this.musicTitles[this.backgroundMusic]);
 		},
 
 		// filter 관련 함수
