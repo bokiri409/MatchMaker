@@ -1,47 +1,3 @@
-<!--<template>
-  <div id="container">
-    <div class="user" id="login">
-      <div class="wrapC table">
-        <div class="middle">
-          <h1>로그인</h1>
-          <div class="input-wrap">
-            <label for="email">Email address</label>
-            <input
-              v-model="user.email"
-              id="email"
-              placeholder="이메일을 입력해주세요"
-              type="text"
-            />
-          </div>
-          <div class="input-wrap">
-            <label for="password">Password</label>
-            <input
-              v-model="user.password"
-              type="password"
-              id="password"
-              placeholder="영문, 숫자 혼용 8자 이상"
-            />
-          </div>
-          <a class="forgot-password" href="#">Forgot password ?</a>
-          <button class="btn btn&#45;&#45;back btn&#45;&#45;login" @click="checkHandler()">
-            로그인
-          </button>
-          <div class="add-option">
-            <div class="wrap">
-              <p>아직 회원이 아니신가요?</p>
-              <router-link
-                v-bind:to="{ name: constants.URL_TYPE.USER.JOIN }"
-                class="btn&#45;&#45;text"
-              >
-                회원가입
-              </router-link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</template>-->
 <template>
     <v-container fill-height style="max-width: 400px;" fluid>
         <v-layout align-center row wrap>
@@ -49,15 +5,15 @@
                 <!--                <v-card class="elevation-12">-->
                 <!--                    <div class="pa-10">-->
                 <v-row
-                    class="fill-height ma-0 pa-7"
+                    class="fill-height ma-14 pa-7"
                     align="center"
                     justify="center"
                 >
                     <v-img
                         contain
-                        src="../../assets/img/login/heartbeat2.png"
-                        max-height="150"
-                        max-width="150"
+                        src="../../assets/img/login/love2.png"
+                        max-height="130"
+                        max-width="130"
                     ></v-img>
                 </v-row>
                 <v-text-field
