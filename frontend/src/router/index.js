@@ -8,6 +8,7 @@ import Login from "../page/user/Login.vue";
 import Join from "../page/user/Join.vue";
 import JoinSession from "../page/user/JoinSession.vue";
 import MyPage from "../page/user/MyPage.vue";
+import FindPassword from "../page/user/FindPassword.vue";
 
 // 포스트
 import List from "../page/post/List.vue";
@@ -40,6 +41,13 @@ export default new Router({
       path: "/user/mypage",
       name: constants.URL_TYPE.USER.MYPAGE,
       component: MyPage,
+    },
+
+    //비밀번호 찾기 페이지
+    {
+      path: "/user/findpassword",
+      name: constants.URL_TYPE.USER.FINDPASSWORD,
+      component: FindPassword,
     },
     // 포스트
     // {
