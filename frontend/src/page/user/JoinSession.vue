@@ -41,7 +41,7 @@
 			<user-video :stream-manager="mainStreamManager"/>
 		</div>
 		<div id="video-container">
-			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
+			<muted-user-video :stream-manager="subStreamManager"/>
 		</div>
 		
 		<modal name="virtual-background-modal">
@@ -124,6 +124,7 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '../../components/video/UserVideo';
+import MutedUserVideo from '../../components/video/MutedUserVideo';
 import "../../assets/css/video.css";
 import constants from "../../lib/constants";
 
@@ -168,6 +169,7 @@ export default {
 	},
 	components: {
 		UserVideo,
+		MutedUserVideo,
 	},
 	created() {},
 	watch: {},
@@ -217,12 +219,10 @@ export default {
 
 						this.mainStream = publisher;
 						this.subStreamManager = this.mainStream;
-						//this.mainStreamManager = this.mainStream;
 
 						// 송출
 						this.mainStream.subscribeToRemote();
 						this.session.publish(this.mainStream);
-
 					})
 					.catch(error => {
 						console.log('There was an error connecting to the session:', error.code, error.message);
@@ -409,8 +409,7 @@ export default {
 				this.removeFilter();
 
 				this.isFilter = true;
-				this.mainStream.stream.applyFilter(filterOption.type, filterOption.options)
-				.catch(alert("사용할 수 없는 이미지 URL입니다..."));
+				this.mainStream.stream.applyFilter(filterOption.type, filterOption.options);
 			}
 		},
 
