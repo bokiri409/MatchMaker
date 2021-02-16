@@ -6,6 +6,8 @@ import VModal from 'vue-js-modal'
 import vuetify from './plugins/vuetify';
 import './plugins/base'
 
+import VueAudio from 'vue-audio';
+
 // mdbvue
 import 'bootstrap-css-only/css/bootstrap.min.css'
 import 'mdbvue/lib/css/mdb.min.css'

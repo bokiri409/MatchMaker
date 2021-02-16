@@ -36,6 +36,19 @@
               안전한 장소에서<br>
               새로운 사람을 만나보세요
             </base-text>
+            <div class="music-player">
+              <audio
+                ref="audio"
+                src="@/assets/music/test.mp4"
+                preload
+                loop
+                id="audio"
+                muted
+              ></audio>
+              <div @click="toggleSound()" class="toggle-sound"></div>
+            </div>
+
+
             <router-link
               v-bind:to="{ name: constants.URL_TYPE.USER.JOINSESSION }"
               class="btn&#45;&#45;text"
@@ -68,7 +81,25 @@
 
     data: () => ({
       constants,
+      file: "@/assets/music/tes.mp4",
     }),
+    methods: {
+    toggleSound() {
+        let audio = this.$refs.audio;
+        if (
+          audio.paused &&
+          document.querySelector(".toggle-sound").classList.contains("paused")
+        ) {
+          console.log("play it")
+          audio.play();
+          document.querySelector(".toggle-sound").classList.remove("paused");
+        } else {
+          console.log("pause it")
+          audio.pause();
+          document.querySelector(".toggle-sound").classList.add("paused");
+        }
+      },
+    }
   }
 </script>
 
