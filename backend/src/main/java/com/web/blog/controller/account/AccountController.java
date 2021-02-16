@@ -57,9 +57,10 @@ public class AccountController {
     public Object login(@RequestBody User user) {
         String encPassword = EncryptionUtils.encryptSHA256(user.getPassword());
         Optional<User> userOpt = userDao.findUserByEmailAndPassword(user.getEmail(), encPassword);
+        final BasicResponse result = new BasicResponse();
 
         if (userOpt.isPresent()) {
-            final BasicResponse result = new BasicResponse();
+
             result.status = true;
 
             // JWT Auth Token 생성하고 result.data에 저장
@@ -67,14 +68,21 @@ public class AccountController {
             result.data = jwtAuthToken.getToken();
 
             User u = new User();
+
+            // 이메일 인증이 되지 않은 경우
+            if(!userOpt.get().getCertified().equals("Y")) {
+                result.data = "Not Certified Email";
+                return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
+            }
+
             u.setEmail(userOpt.get().getEmail());
             u.setNickname(userOpt.get().getNickname());
             result.object = u;
             return new ResponseEntity<>(result, HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            result.data = "Invalid Id or Password";
+            return new ResponseEntity<>(result, HttpStatus.UNAUTHORIZED);
         }
-
     }
 
     @PostMapping("/api/account/signup")
