@@ -170,13 +170,23 @@ export default {
 		createSession (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(this.$api_url + `api-sessions/create-session/`, sessionId)
+					.post(this.$api_url + `/api-sessions/create-session/`, sessionId)
 					.then(response => response.data)
 					.then(data => resolve(data[0]))
 					.catch(error => {
 						if (error.response.status === 409) {
 							resolve(sessionId);
-						} else {
+						} 
+						else if (error.response.data.message.slice(0,35) == "io.jsonwebtoken.ExpiredJwtException") {
+							alert("로그인 시간이 만료되었습니다. 다시 로그인 해주세요.");
+							this.$store.dispatch("LOGOUT", this.user).then(() =>
+								this.$router.push({
+								path: "/account/login",
+								})
+							)
+							.catch(() => {});
+						}
+						else {
 							console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
 							if (window.confirm(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`)) {
 								location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
@@ -190,7 +200,7 @@ export default {
 		createToken (sessionId) {
 			return new Promise((resolve, reject) => {
 				axios
-					.post(this.$api_url + `api-sessions/generate-token/`, sessionId)
+					.post(this.$api_url + `/api-sessions/generate-token/`, sessionId)
 					.then(response => response.data)
 					.then(data => resolve(data[0]))
 					.catch(error => reject(error.response));
@@ -199,7 +209,7 @@ export default {
 
 		leaveSession: function() {
 			axios
-				.post(this.$api_url + `api-sessions/remove-user/`, this.roomId)
+				.post(this.$api_url + `/api-sessions/remove-user/`, this.roomId)
 				.then(response => {
 					if(response.status == 200){
 
