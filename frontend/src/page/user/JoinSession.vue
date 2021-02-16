@@ -42,10 +42,7 @@
 		<div id="video-container">
 			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
 		</div>
-
-		<button id="filter-modal-btn" class="btn btn--back btn--login" @click="showFilterModal()">
-    		필터 적용하기
-    	</button>
+		
 		<modal name="filter-modal">
 			<p>적용할 필터 선택</p>
 			<section>
@@ -56,9 +53,21 @@
 			<button id="modal-hide" @click="hideFilterModal()">OK</button>
 		</modal>
 		
-    	<button id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
-    		퇴장
-    	</button>
+		<v-fab-transition>
+			<v-btn v-show="!isMenuHidden" id="filter-modal-btn" class="btn btn--back btn--login" @click="showFilterModal()">
+				필터 적용하기
+			</v-btn>
+		</v-fab-transition>
+		
+		<v-fab-transition>
+			<v-btn v-show="!isMenuHidden" id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
+				퇴장
+			</v-btn>
+		</v-fab-transition>
+
+		<v-btn id="show-menu" @click="isMenuHidden=!isMenuHidden">
+              {{ isMenuHidden ? '메뉴' : '숨기기' }}
+        </v-btn>
     </div>
   </div>
 </template>
@@ -92,6 +101,7 @@ export default {
 			filterOptions: [{id: 'grayscale', value: 'Grayscale'}, {id: 'rotation', value: 'Rotation'}, {id: 'faceoverlay', value: 'Faceoverlay'}, {id: 'videobox', value: 'Videobox'},
 							{id: 'text', value: 'Text'}, {id: 'time', value: 'Time'}, {id: 'clock', value: 'Clock'},  {id: 'noFilter', value: 'NoFilter'},],
 			roomId: "",
+			isMenuHidden: true,
 		};
 	},
 	components: {
@@ -109,6 +119,7 @@ export default {
 			if (!err) alert(msg);
 			else this.joinSession();
 		},
+	
 		joinSession: function() {
 			this.OV = new OpenVidu();
 			

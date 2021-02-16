@@ -78,28 +78,18 @@ body {
 
 #session #leave-session-btn {
     position: absolute;
-    top: 80px;
-    right: 25px;
+    bottom: 75px;
+    left: 25px;
     width: 20%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 10px;
-    border: solid;
-    border-width: 1px;
-    border-color: #DDDDDD;
+    margin: 0px;
 }
 
 #session #filter-modal-btn {
     position: absolute;
-    top: 80px;
+    bottom: 125px;
     left: 25px;
-	width: 20%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border-radius: 10px;
-    border: solid;
-    border-width: 1px;
-    border-color: #DDDDDD;
+    width: 20%;
+    margin: 0px;
 }
 
 #session .vm--modal{
@@ -149,4 +139,12 @@ body {
     border-top-color: #DDDDDD;
     bottom: 0px;
     left: 0px;
+}
+
+#show-menu {
+	position: absolute;
+    background-color: #F2ACC6;
+    bottom: 25px;
+    left: 25px;
+	width: 20%;
 }
