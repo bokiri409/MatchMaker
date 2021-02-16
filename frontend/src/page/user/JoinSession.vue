@@ -5,7 +5,7 @@
         	<v-layout align-center row wrap>
 				<v-flex xs10>
 					<h1>😘💻</h1>
-					<h2>상대방도 기다리고 있습니다!</h2>
+					<h4><strong>상대방도 기다리고 있습니다!</strong></h4>
 					<base-text>미팅 방을 생성하거나 입장하세요.</base-text>
 					<v-text-field
                         v-model="roomId"
@@ -212,7 +212,7 @@ export default {
 							resolution: '640x480', // 해상도
 							frameRate: 30,
 							insertMode: 'APPEND',	 // target element에 추가되는 방식 (target element = 'video-container')
-							mirror: false,       	 // 거울모드
+							mirror: true,       	 // 거울모드
 						});
 
 						this.mainStream = publisher;
