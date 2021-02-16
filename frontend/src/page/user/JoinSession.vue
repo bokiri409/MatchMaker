@@ -46,19 +46,32 @@
 		<modal name="filter-modal">
 			<p>적용할 필터 선택</p>
 			<section>
-			<template v-for="fo in filterOptions">
-				<input type="radio" v-model="filter" :id="fo.id" :value="fo.value" :key="fo.id">{{fo.id}}
-  			</template>
+				<template v-for="fo in filterOptions">
+					<input type="radio" v-model="filter" :id="fo.id" :value="fo.value" :key="fo.id">{{fo.id}}
+					<br :key="fo.value"/>
+				</template>
 			</section>
 			<button id="modal-hide" @click="hideFilterModal()">OK</button>
 		</modal>
 		
 		<v-fab-transition>
-			<v-btn v-show="!isMenuHidden" id="filter-modal-btn" class="btn btn--back btn--login" @click="showFilterModal()">
-				필터 적용하기
+			<v-btn v-show="!isMenuHidden" id="virtual-background-btn" class="btn btn--back btn--login">
+				가상 배경
 			</v-btn>
 		</v-fab-transition>
 		
+		<v-fab-transition>
+			<v-btn v-show="!isMenuHidden" id="background-music-btn" class="btn btn--back btn--login">
+				배경 음악
+			</v-btn>
+		</v-fab-transition>
+
+		<v-fab-transition>
+			<v-btn v-show="!isMenuHidden" id="filter-modal-btn" class="btn btn--back btn--login" @click="showFilterModal()">
+				필터
+			</v-btn>
+		</v-fab-transition>
+
 		<v-fab-transition>
 			<v-btn v-show="!isMenuHidden" id="leave-session-btn" class="btn btn--back btn--login" @click="leaveSession()">
 				퇴장
@@ -98,8 +111,8 @@ export default {
 			mySessionId: undefined,
 			filter: undefined,
 			isFilter: false,
-			filterOptions: [{id: 'grayscale', value: 'Grayscale'}, {id: 'rotation', value: 'Rotation'}, {id: 'faceoverlay', value: 'Faceoverlay'}, {id: 'videobox', value: 'Videobox'},
-							{id: 'text', value: 'Text'}, {id: 'time', value: 'Time'}, {id: 'clock', value: 'Clock'},  {id: 'noFilter', value: 'NoFilter'},],
+			filterOptions: [{id: '흑백화면', value: 'Grayscale'}, {id: '상하반전', value: 'Rotation'}, {id: '테두리', value: 'Videobox'},
+							{id: '시간 기록', value: 'Time'}, {id: '시계', value: 'Clock'}, {id: '머리 위 강아지', value: 'Faceoverlay'}, {id: '필터 해제하기', value: 'NoFilter'}, ],
 			roomId: "",
 			isMenuHidden: true,
 		};

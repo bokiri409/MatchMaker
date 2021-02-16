@@ -76,9 +76,17 @@ body {
     position: relative;
 }
 
-#session #leave-session-btn {
+#session #virtual-background-btn {
     position: absolute;
-    bottom: 75px;
+    bottom: 225px;
+    left: 25px;
+    width: 20%;
+    margin: 0px;
+}
+
+#session #background-music-btn {
+    position: absolute;
+    bottom: 175px;
     left: 25px;
     width: 20%;
     margin: 0px;
@@ -87,6 +95,14 @@ body {
 #session #filter-modal-btn {
     position: absolute;
     bottom: 125px;
+    left: 25px;
+    width: 20%;
+    margin: 0px;
+}
+
+#session #leave-session-btn {
+    position: absolute;
+    bottom: 75px;
     left: 25px;
     width: 20%;
     margin: 0px;
@@ -113,7 +129,7 @@ body {
 #session .vm--modal section{
     position: absolute;
     width: 100%;
-    top: 60px;
+    top: 45px;
     left: 0px;
     text-align: left;
 }
