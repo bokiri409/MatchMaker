@@ -215,6 +215,15 @@ export default {
         })
         .catch((error) => {
           console.dir(error);
+          if (error.response.data.message.slice(0,35) == "io.jsonwebtoken.ExpiredJwtException") {
+            alert("로그인 시간이 만료되었습니다. 다시 로그인 해주세요.");
+            this.$store.dispatch("LOGOUT", this.user).then(() =>
+                this.$router.push({
+                  path: "/account/login",
+                })
+            )
+            .catch(() => {});
+          }
         });
     },
     dropOutHandler: function() {
