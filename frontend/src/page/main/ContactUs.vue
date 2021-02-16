@@ -1,6 +1,6 @@
 <template>
   <section
-    id="get-in-touch"
+    id="contact-us"
     class="overflow-hidden"
   >
     <v-row
@@ -46,41 +46,62 @@
         <base-heading class="mb-5">
           Contact Us
         </base-heading>
-
         <v-sheet
-          color="transparent"
-          max-width="600"
-        >
-          <v-text-field
-            color="info"
-            label="Name"
-            solo
-            flat
-          />
+          color="#a1cae4"
+          height="360"
+          width="900"
+          elevation="2"
+          rounded
+          >
+            <v-row>
 
-          <v-text-field
-            color="info"
-            label="Email"
-            solo
-            flat
-          />
+              <v-col
+              cols="12"
+              md="6"
+              >
+                <v-layout
+                column align-baseline
+                >
 
-          <v-text-field
-            color="info"
-            label="Subject"
-            solo
-            flat
-          />
+                  <v-icon x-large id="contact_icon">
+                    mdi-city
+                  </v-icon>
+                  <v-text id="contact_text">
+                    Seoul Sangrok Building 508 Eonju-ro,<br>
+                  </v-text>
+                  <v-text id="contact_text">
+                    Gangnam-gu, Seoul
+                  </v-text><br><br>
 
-          <v-textarea
-            color="info"
-            label="Message"
-            solo
-            flat
-          />
+                  <v-icon x-large id="contact_icon">
+                    mdi-phone
+                  </v-icon>
+                  <v-text id="contact_text">
+                    010-1234-5678
+                  </v-text><br><br>
 
-          <base-btn>Send</base-btn>
+                  <v-icon x-large id="contact_icon">
+                    mdi-email
+                  </v-icon>
+                  <v-text id="contact_text">
+                    match_maker@multicampus.ac.kr
+                  </v-text>
+                </v-layout>
+
+              </v-col>
+              <v-col>
+                <v-img
+                src="../../assets/map.png"
+                id="map_img"
+                >
+
+                </v-img>
+              </v-col>
+
+            </v-row>
+
         </v-sheet>
+
       </v-col>
 
       
@@ -96,7 +117,24 @@
 
 <style scoped>
 #contact_left_side {
-  background-color: #79b4d9;
+  background-color: #bcd9ec;
   height: 910px;
+}
+
+#contact_text {
+  font: italic;
+  font-size: large;
+  font-weight: 500;
+  text-indent: 0.5em;
+}
+
+#map_img {
+  height: 335px;
+  width: 425px;
+  border-radius: 10px;
+}
+
+#contact_icon {
+  text-indent: 0.1em;
 }
 </style>
