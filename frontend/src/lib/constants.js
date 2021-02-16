@@ -14,6 +14,7 @@ export default {
       JOIN: "join",
       JOINSESSION: "joinSession",
       MYPAGE: "mypage",
+      FINDPASSWORD: "findpassword",
     },
     POST: {
       MAIN: "main",
