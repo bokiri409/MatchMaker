@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
+import '../main.js';
+import {api_url} from "../main";
 
 Vue.use(Vuex);
 
@@ -27,7 +29,7 @@ export default new Vuex.Store({
       localStorage.setItem("userData", JSON.stringify(userData));
       //token(토큰)을 Axios Header에 추가
       // Axios instance Authorization Header에 JWT Token을 포함
-      axios.defaults.headers.common["x-auth-token"] = `Bearer ${state.token}`;
+      axios.defaults.headers.common["x-auth-token"] = `${state.token}`;
     },
     LOGIN(state, payload) { //로그인 성공 시
         state.email = payload.object.email;
@@ -58,10 +60,10 @@ export default new Vuex.Store({
     // 로그인 시도 -> mutations로 넘어감
     LOGIN(context, user) {
       // return axios.post("http://localhost:8080/account/login", user)
-      return axios.post(this.$api_url + `/account/login`, user)
+      return axios.post(api_url + `/account/login`, user)
       .then((response) => { //로그인 성공 시 토큰(data) 반환
-          context.commit('LOGIN', response.data);
-      })
+            context.commit('LOGIN', response.data);
+          })
     },
     LOGOUT(context) {
       context.commit('LOGOUT');

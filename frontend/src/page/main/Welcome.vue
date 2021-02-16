@@ -9,7 +9,7 @@
         md="6"
       >
         <v-img
-          :src="require('@/assets/main.jpg')"
+          :src="require('@/assets/main.png')"
           height="100vh"
         />
       </v-col>
@@ -36,19 +36,32 @@
               안전한 장소에서<br>
               새로운 사람을 만나보세요
             </base-text>
-            <input
-              type="url"
-              id="input_url"
+            <div class="music-player">
+              <audio
+                ref="audio"
+                src="@/assets/music/test.mp4"
+                preload
+                loop
+                id="audio"
+                muted
+              ></audio>
+              <div @click="toggleSound()" class="toggle-sound"></div>
+            </div>
+
+
+            <router-link
+              v-bind:to="{ name: constants.URL_TYPE.USER.JOINSESSION }"
+              class="btn&#45;&#45;text"
             >
-            <v-btn
-              class="ma-2"
-              outlined
-              color="#79b4d9"
-              small
-              href="http://localhost:8081/#/user/joinsession"
-            >
-              Enter
-            </v-btn>
+              <v-btn
+                outlined
+                color="#79b4d9"
+                id="get_started"
+              >
+                Get Started
+              </v-btn>
+            </router-link>
+
           </v-col>
         </v-row>
 
@@ -60,9 +73,46 @@
   </section>
 </template>
 
+<script>
+  import constants from "../../lib/constants";
+
+  export default {
+    name: 'CommonAppBar',
+
+    data: () => ({
+      constants,
+      file: "@/assets/music/tes.mp4",
+    }),
+    methods: {
+    toggleSound() {
+        let audio = this.$refs.audio;
+        if (
+          audio.paused &&
+          document.querySelector(".toggle-sound").classList.contains("paused")
+        ) {
+          console.log("play it")
+          audio.play();
+          document.querySelector(".toggle-sound").classList.remove("paused");
+        } else {
+          console.log("pause it")
+          audio.pause();
+          document.querySelector(".toggle-sound").classList.add("paused");
+        }
+      },
+    }
+  }
+</script>
+
 <style scoped>
 #input_url {
   border: 1px solid #79b4d9;
   border-radius: 5px;
 }
+
+#get_started {
+  font-weight: bold;
+  max-width: 150px;
+  width: 100%;
+}
+
 </style>

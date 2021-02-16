@@ -17,6 +17,7 @@
         class="my-2"
         @click="$emit('gotolink', link)"
       >
+        
         {{ link }}
         
       </v-btn>

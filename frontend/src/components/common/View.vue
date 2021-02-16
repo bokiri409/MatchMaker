@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import AboutUs from '../../page/main/AboutUs.vue'
-import RecentReviews from '../../page/main/RecentReviews.vue'
   export default {
     name: 'CommonView',
 
