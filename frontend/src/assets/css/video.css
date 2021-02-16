@@ -5,15 +5,11 @@ body, html {
 .user {
     height: 100vh;
     width: 100vw;
+    text-align: center;
 }
 
-.user .middle{
-	position: absolute;
-    top: calc(50% - 37px);
-}
-
-.user #name{
-    background-color: #eeeeee;
+.user h1 {
+    font-size: 100px;
 }
 
 body {
@@ -56,7 +52,7 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
     border-radius: 10px;
-    background-color: #DDDDDD;
+    background-color: #F2ACC6;
 }
 
 #main-video{

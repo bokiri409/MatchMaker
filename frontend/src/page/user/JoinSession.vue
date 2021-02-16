@@ -1,21 +1,33 @@
 <template>
   <div id="main-container">
     <div class="user" v-if="!session">
-      <div class="wrapC table">
-        <div class="middle">
-          <div class="input-wrap">
-            <input
-              v-model="roomId"
-              id="name"
-              placeholder="방 제목을 입력해주세요"
-              type="text"
-            />
-          </div>
-          <button class="btn btn--back btn--login" @click="checkHandler()">
-            입장
-          </button>
-        </div>
-      </div>
+		<v-container fill-height style="max-width: 400px;" fluid>
+        	<v-layout align-center row wrap>
+				<v-flex xs10>
+					<h1>😘💻</h1>
+					<h2>상대방도 기다리고 있습니다!</h2>
+					<base-text>미팅 방을 생성하거나 입장하세요.</base-text>
+					<v-text-field
+                        v-model="roomId"
+						label="방 제목을 입력해주세요."
+						id="name"
+						placeholder="방 제목을 입력해주세요."
+						filled
+						solo
+						rounded
+						dense
+					></v-text-field>
+					<v-btn
+						rounded
+						block
+						color="#F2ACC6"
+                        @click="checkHandler()"
+					>
+						입장
+					</v-btn>
+				</v-flex>
+			</v-layout>
+		</v-container>
     </div>
 
     <div id="session" v-if="session">
