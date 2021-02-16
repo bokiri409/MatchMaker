@@ -63,6 +63,17 @@
 
 		<modal name="background-music-modal">
 			<p class="modal-title">배경 음악 선택</p>
+			<v-carousel v-model="backgroundMusic" class="background-music-carousel" height="230" hide-delimiter-background show-arrows-on-hover>
+				<v-carousel-item class="background-music-carousel-item" v-for="(musicTitle, i) in musicTitles" :key="i">
+					<v-sheet :color="colors[i]"	height="100%">
+					<v-row class="fill-height" align="center" justify="center">
+						<div class="display-1">
+							{{ musicTitle }}
+						</div>
+					</v-row>
+					</v-sheet>
+				</v-carousel-item>
+			</v-carousel>
 			<button class="modal-hide" @click="hideBackgroundMusicModal()">OK</button>
 		</modal>
 
@@ -139,6 +150,19 @@ export default {
 			roomId: "",
 			isMenuHidden: true,
 			virtualBackgroundURL: undefined,
+			backgroundMusic: undefined,
+			colors: [
+				'indigo',
+				'warning',
+				'pink darken-2',
+				'red lighten-1',
+			],
+			musicTitles: [
+				'잔잔한 노래',
+				'분위기 있는 노래',
+				'그냥 적당한 노래',
+				'노래 끄기',
+			],
 		};
 	},
 	components: {
@@ -279,7 +303,6 @@ export default {
 		
         hideVirtualBackgroundModal () {
 			this.$modal.hide('virtual-background-modal');
-			this.applyFilter();
 		},
 
 		showBackgroundMusicModal () {
@@ -288,7 +311,7 @@ export default {
 		
         hideBackgroundMusicModal () {
 			this.$modal.hide('background-music-modal');
-			this.applyFilter();
+			alert(this.musicTitles[this.backgroundMusic]);
 		},
 
 		// filter 관련 함수
