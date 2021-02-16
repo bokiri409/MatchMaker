@@ -44,21 +44,33 @@
 		</div>
 		
 		<modal name="virtual-background-modal">
-			<p>가상 배경 선택</p>
-			
+			<p class="modal-title">가상 배경 선택</p>
+			<section style="text-align:center;">
+				<p class="modal-description">적용할 가상 배경 이미지의 url을 입력해주세요.</p>
+				<v-text-field
+                    v-model="virtualBackgroundURL"
+					label="가상 배경 이미지 URL"
+					id="virtualBackgroundURL"
+					filled
+					solo
+					rounded
+				></v-text-field>
+				<v-btn id="virtual-background-activate-btn">적용하기</v-btn>
+				<v-btn id="virtual-background-delete-btn">해제하기</v-btn>
+			</section>
 			<button class="modal-hide" @click="hideVirtualBackgroundModal()">OK</button>
 		</modal>
 
 		<modal name="background-music-modal">
-			<p>배경 음악 선택</p>
+			<p class="modal-title">배경 음악 선택</p>
 			<button class="modal-hide" @click="hideBackgroundMusicModal()">OK</button>
 		</modal>
 
 		<modal name="filter-modal">
-			<p>적용할 필터 선택</p>
+			<p class="modal-title">적용할 필터 선택</p>
 			<section>
 				<template v-for="fo in filterOptions">
-					<input type="radio" v-model="filter" :id="fo.id" :value="fo.value" :key="fo.id">{{fo.id}}
+					<input type="radio" class="input-radio" v-model="filter" :id="fo.id" :value="fo.value" :key="fo.id">{{fo.id}}
 					<br :key="fo.value"/>
 				</template>
 			</section>
@@ -126,6 +138,7 @@ export default {
 							{id: '시간 기록', value: 'Time'}, {id: '시계', value: 'Clock'}, {id: '머리 위 강아지', value: 'Faceoverlay'}, {id: '필터 해제하기', value: 'NoFilter'}, ],
 			roomId: "",
 			isMenuHidden: true,
+			virtualBackgroundURL: undefined,
 		};
 	},
 	components: {
