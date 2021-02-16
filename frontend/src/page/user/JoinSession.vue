@@ -43,6 +43,17 @@
 			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
 		</div>
 		
+		<modal name="virtual-background-modal">
+			<p>가상 배경 선택</p>
+			
+			<button class="modal-hide" @click="hideVirtualBackgroundModal()">OK</button>
+		</modal>
+
+		<modal name="background-music-modal">
+			<p>배경 음악 선택</p>
+			<button class="modal-hide" @click="hideBackgroundMusicModal()">OK</button>
+		</modal>
+
 		<modal name="filter-modal">
 			<p>적용할 필터 선택</p>
 			<section>
@@ -51,17 +62,17 @@
 					<br :key="fo.value"/>
 				</template>
 			</section>
-			<button id="modal-hide" @click="hideFilterModal()">OK</button>
+			<button class="modal-hide" @click="hideFilterModal()">OK</button>
 		</modal>
 		
 		<v-fab-transition>
-			<v-btn v-show="!isMenuHidden" id="virtual-background-btn" class="btn btn--back btn--login">
+			<v-btn v-show="!isMenuHidden" id="virtual-background-btn" class="btn btn--back btn--login" @click="showVirtualBackgroundModal()">
 				가상 배경
 			</v-btn>
 		</v-fab-transition>
 		
 		<v-fab-transition>
-			<v-btn v-show="!isMenuHidden" id="background-music-btn" class="btn btn--back btn--login">
+			<v-btn v-show="!isMenuHidden" id="background-music-btn" class="btn btn--back btn--login" @click="showBackgroundMusicModal()">
 				배경 음악
 			</v-btn>
 		</v-fab-transition>
@@ -247,6 +258,24 @@ export default {
 					}
 				})
 				.catch(error => console.warn(error.response));
+		},
+
+		showVirtualBackgroundModal () {
+            this.$modal.show('virtual-background-modal');
+		},
+		
+        hideVirtualBackgroundModal () {
+			this.$modal.hide('virtual-background-modal');
+			this.applyFilter();
+		},
+
+		showBackgroundMusicModal () {
+            this.$modal.show('background-music-modal');
+		},
+		
+        hideBackgroundMusicModal () {
+			this.$modal.hide('background-music-modal');
+			this.applyFilter();
 		},
 
 		// filter 관련 함수

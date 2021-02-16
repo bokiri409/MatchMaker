@@ -118,7 +118,8 @@ body {
     position: absolute;
     width: 100%;
     height: 40px;
-    font-size: 15pt;
+    font-size: 12pt;
+    font-weight: bold;
     padding-top: 10px;
     border-bottom: solid;
     border-bottom-width: 1px;
@@ -129,7 +130,7 @@ body {
 #session .vm--modal section{
     position: absolute;
     width: 100%;
-    top: 45px;
+    top: 55px;
     left: 0px;
     text-align: left;
 }
@@ -146,7 +147,7 @@ body {
     border: initial;
 }
 
-#session .vm--modal #modal-hide{
+#session .vm--modal .modal-hide{
     position: absolute;
     width: 100%;
     height: 40px;
