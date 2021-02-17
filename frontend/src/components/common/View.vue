@@ -19,7 +19,6 @@
     components: {
       ContactUs: () => import('../../page/main/ContactUs'),
       RecentReviews: () => import('../../page/main/RecentReviews'),
-      // Services: () => import('@/components/Services'),
       Welcome: () => import('../../page/main/Welcome'),
       CommonFooter: () => import('../common/Footer'),
       AboutUs: () => import('../../page/main/AboutUs'),

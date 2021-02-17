@@ -64,7 +64,7 @@
 
 		<modal name="background-music-modal">
 			<p class="modal-title">배경 음악 선택</p>
-			<v-carousel v-model="backgroundMusic" class="background-music-carousel" height="230" hide-delimiter-background show-arrows-on-hover>
+			<v-carousel v-model="backgroundMusicIndex" class="background-music-carousel" height="230" hide-delimiter-background show-arrows-on-hover>
 				<v-carousel-item class="background-music-carousel-item" v-for="(musicTitle, i) in musicTitles" :key="i">
 					<v-sheet :color="colors[i]"	height="100%">
 					<v-row class="fill-height" align="center" justify="center">
@@ -116,6 +116,8 @@
 		<v-btn id="show-menu" @click="isMenuHidden=!isMenuHidden">
               {{ isMenuHidden ? '메뉴' : '숨기기' }}
         </v-btn>
+
+		<audio id="background-music" :loop="true" :src="backgroundMusic" style="display:none;" preload autoplay></audio>
     </div>
   </div>
 </template>
@@ -152,6 +154,7 @@ export default {
 			roomId: "",
 			isMenuHidden: true,
 			virtualBackgroundURL: undefined,
+			backgroundMusicIndex: 0,
 			backgroundMusic: undefined,
 			colors: [
 				'indigo',
@@ -160,10 +163,16 @@ export default {
 				'red lighten-1',
 			],
 			musicTitles: [
+				'노래 끄기',
 				'잔잔한 노래',
 				'분위기 있는 노래',
 				'그냥 적당한 노래',
-				'노래 끄기',
+			],
+			musicPaths: [
+				undefined,
+				require('@/assets/music/1.mp3'),
+				require('@/assets/music/2.mp3'),
+				undefined,
 			],
 		};
 	},
@@ -314,7 +323,9 @@ export default {
 		
         hideBackgroundMusicModal () {
 			this.$modal.hide('background-music-modal');
-			alert(this.musicTitles[this.backgroundMusic]);
+			this.backgroundMusic = this.musicPaths[this.backgroundMusicIndex];
+			if(this.backgroundMusic == undefined)
+				this.$el.querySelectorAll('audio')[0].pause();
 		},
 
 		// filter 관련 함수
