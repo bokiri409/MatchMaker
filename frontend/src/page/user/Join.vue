@@ -271,6 +271,8 @@
         isTerm: false,
         passwordType: "password",
         passwordConfirmType: "password",
+        show1: false,
+        show2: false,
       };
     },
   };
