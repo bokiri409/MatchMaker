@@ -164,15 +164,15 @@ export default {
 			],
 			musicTitles: [
 				'노래 끄기',
-				'잔잔한 노래',
-				'분위기 있는 노래',
-				'그냥 적당한 노래',
+				'Peacefully',
+				'Cocktail Hour',
+				'Warm Afternoon Outdoors',
 			],
 			musicPaths: [
 				undefined,
-				require('@/assets/music/1.mp3'),
-				require('@/assets/music/2.mp3'),
-				undefined,
+				require('@/assets/music/Peacefully - E\'s Jammy Jams.mp3'),
+				require('@/assets/music/Cocktail Hour - Aaron Kenny.mp3'),
+				require('@/assets/music/Warm Afternoon Outdoors.mp3'),
 			],
 		};
 	},
@@ -324,6 +324,7 @@ export default {
         hideBackgroundMusicModal () {
 			this.$modal.hide('background-music-modal');
 			this.backgroundMusic = this.musicPaths[this.backgroundMusicIndex];
+			this.$el.querySelectorAll('audio')[0].volume = 0.4;
 			if(this.backgroundMusic == undefined)
 				this.$el.querySelectorAll('audio')[0].pause();
 		},
