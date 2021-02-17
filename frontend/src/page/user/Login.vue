@@ -113,11 +113,18 @@
                         path: "/",
                     })
                 )
-                .catch(() =>
+                .catch((error) => {
+                    console.log(error);
+                    // 인증된 이메일이 아닐 때 에러처리
+                    if(error.response.data.data == "Not Certified Email"){
+                        alert("인증된 이메일이 아닙니다. 이메일 인증을 완료해주세요.");
+                    }
+                    else{ //인증된 이메일이지만 이메일과 비밀번호 잘못 입력 시 에러처리
                         alert("이메일과 비밀번호를 확인해주세요."),
-                    this.user.email = '',
-                    this.user.password = '',
-                );
+                        this.user.email = '',
+                        this.user.password = ''
+                    }
+                });
             },
         },
         data: () => {

@@ -162,7 +162,7 @@
           color="#F2ACC6"
           @click="checkHandler()"
         >
-          Sign in
+          Sign up
         </v-btn>
 
       </v-flex>
