@@ -5,7 +5,7 @@
         	<v-layout align-center row wrap>
 				<v-flex xs10>
 					<h1>😘💻</h1>
-					<h2>상대방도 기다리고 있습니다!</h2>
+					<h4><strong>상대방도 기다리고 있습니다!</strong></h4>
 					<base-text>미팅 방을 생성하거나 입장하세요.</base-text>
 					<v-text-field
                         v-model="roomId"
@@ -41,7 +41,7 @@
 			<user-video :stream-manager="mainStreamManager"/>
 		</div>
 		<div id="video-container">
-			<user-video :stream-manager="subStreamManager" @click.native="swapMainVideoStreamManager()"/>
+			<muted-user-video :stream-manager="subStreamManager"/>
 		</div>
 		
 		<modal name="virtual-background-modal">
@@ -64,7 +64,7 @@
 
 		<modal name="background-music-modal">
 			<p class="modal-title">배경 음악 선택</p>
-			<v-carousel v-model="backgroundMusic" class="background-music-carousel" height="230" hide-delimiter-background show-arrows-on-hover>
+			<v-carousel v-model="backgroundMusicIndex" class="background-music-carousel" height="230" hide-delimiter-background show-arrows-on-hover>
 				<v-carousel-item class="background-music-carousel-item" v-for="(musicTitle, i) in musicTitles" :key="i">
 					<v-sheet :color="colors[i]"	height="100%">
 					<v-row class="fill-height" align="center" justify="center">
@@ -116,6 +116,8 @@
 		<v-btn id="show-menu" @click="isMenuHidden=!isMenuHidden">
               {{ isMenuHidden ? '메뉴' : '숨기기' }}
         </v-btn>
+
+		<audio id="background-music" :loop="true" :src="backgroundMusic" style="display:none;" preload autoplay></audio>
     </div>
   </div>
 </template>
@@ -124,6 +126,7 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '../../components/video/UserVideo';
+import MutedUserVideo from '../../components/video/MutedUserVideo';
 import "../../assets/css/video.css";
 import constants from "../../lib/constants";
 
@@ -151,6 +154,7 @@ export default {
 			roomId: "",
 			isMenuHidden: true,
 			virtualBackgroundURL: undefined,
+			backgroundMusicIndex: 0,
 			backgroundMusic: undefined,
 			colors: [
 				'indigo',
@@ -159,15 +163,22 @@ export default {
 				'red lighten-1',
 			],
 			musicTitles: [
+				'노래 끄기',
 				'잔잔한 노래',
 				'분위기 있는 노래',
 				'그냥 적당한 노래',
-				'노래 끄기',
+			],
+			musicPaths: [
+				undefined,
+				require('@/assets/music/1.mp3'),
+				require('@/assets/music/2.mp3'),
+				undefined,
 			],
 		};
 	},
 	components: {
 		UserVideo,
+		MutedUserVideo,
 	},
 	created() {},
 	watch: {},
@@ -212,17 +223,15 @@ export default {
 							resolution: '640x480', // 해상도
 							frameRate: 30,
 							insertMode: 'APPEND',	 // target element에 추가되는 방식 (target element = 'video-container')
-							mirror: false,       	 // 거울모드
+							mirror: true,       	 // 거울모드
 						});
 
 						this.mainStream = publisher;
 						this.subStreamManager = this.mainStream;
-						//this.mainStreamManager = this.mainStream;
 
 						// 송출
 						this.mainStream.subscribeToRemote();
 						this.session.publish(this.mainStream);
-
 					})
 					.catch(error => {
 						console.log('There was an error connecting to the session:', error.code, error.message);
@@ -314,7 +323,9 @@ export default {
 		
         hideBackgroundMusicModal () {
 			this.$modal.hide('background-music-modal');
-			alert(this.musicTitles[this.backgroundMusic]);
+			this.backgroundMusic = this.musicPaths[this.backgroundMusicIndex];
+			if(this.backgroundMusic == undefined)
+				this.$el.querySelectorAll('audio')[0].pause();
 		},
 
 		// filter 관련 함수
@@ -409,8 +420,7 @@ export default {
 				this.removeFilter();
 
 				this.isFilter = true;
-				this.mainStream.stream.applyFilter(filterOption.type, filterOption.options)
-				.catch(alert("사용할 수 없는 이미지 URL입니다..."));
+				this.mainStream.stream.applyFilter(filterOption.type, filterOption.options);
 			}
 		},
 
