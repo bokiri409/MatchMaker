@@ -66,8 +66,7 @@ public class SessionController {
         } else {
             try {
                 Session session = this.openVidu.createSession();
-                
-                System.out.println("세션 생성");
+
                 this.roomIdSession.put(roomId, session);
                 this.sessionIdUserIdToken.put(session.getSessionId(), new HashMap<>());
 
