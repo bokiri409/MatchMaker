@@ -184,13 +184,22 @@ export default {
 	watch: {},
 	methods: {
 		checkHandler: function() {
-			let err = true;
-			let msg = "";
-			
-			!this.roomId && ((msg = "방 제목을 입력해주세요"), (err = false));
-			
-			if (!err) alert(msg);
-			else this.joinSession();
+			// 로컬스토리지에 유저 데이터가 없으면 미팅방 생성 불가
+			if (!localStorage.getItem('userData')){
+				alert("로그인 후에 미팅방 생성이 가능합니다.");
+				this.$router.push({ // 로그인 페이지로 이동
+					path: "/user/login",
+				});
+			}
+			else{ // 로그인 후
+				let err = true;
+				let msg = "";
+
+				!this.roomId && ((msg = "방 제목을 입력해주세요"), (err = false));
+
+				if (!err) alert(msg);
+				else this.joinSession();
+			}
 		},
 	
 		joinSession: function() {
