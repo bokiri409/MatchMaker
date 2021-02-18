@@ -95,7 +95,9 @@ public class EmailController {
 	@PostMapping(value = "/api/email/find-password/send-mail")
 	@ApiOperation(value = "유저의 비밀번호를 임시 비밀번호로 변경, 등록된 이메일로 임시 비밀번호 전송")
 	public Object sendTempPasswordMail(@RequestBody User user) throws MessagingException {
+		// 임시 비밀번호 생성
 		String tempPassword = userService.getTempPassword();
+		// 임시 비밀번호 DB에 업데이트
 		userService.updatePassword(tempPassword, user.getEmail());
 
 		String emailContent = "<!DOCTYPE html>" +
