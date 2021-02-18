@@ -2,8 +2,6 @@
     <v-container fill-height style="max-width: 400px;" fluid>
         <v-layout align-center row wrap>
             <v-flex xs10>
-                <!--                <v-card class="elevation-12">-->
-                <!--                    <div class="pa-10">-->
                 <v-row
                     class="fill-height ma-14 pa-7"
                     align="center"
@@ -68,8 +66,6 @@
                         비밀번호를 잊어버렸나요?
                     </router-link>
                 </p>
-                <!--                    </div>-->
-                <!--                </v-card>-->
             </v-flex>
         </v-layout>
     </v-container>

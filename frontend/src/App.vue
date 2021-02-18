@@ -3,10 +3,6 @@
     <common-app-bar />
 
     <router-view/>
-    
-    <!-- <common-view /> -->
-
-    <!-- <common-footer /> -->
   </v-app>
 </template>
 

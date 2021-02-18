@@ -171,7 +171,6 @@
       dropOutHandler: function() {
         axios
             .delete(
-                // "http://localhost:8080/account/delete?email=" +
                 this.$api_url +`/account/delete?email=` +
                 this.$store.state.email
             )

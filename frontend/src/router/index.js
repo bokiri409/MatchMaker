@@ -10,9 +10,6 @@ import JoinSession from "../page/user/JoinSession.vue";
 import MyPage from "../page/user/MyPage.vue";
 import FindPassword from "../page/user/FindPassword.vue";
 
-// 포스트
-import List from "../page/post/List.vue";
-
 // 메인 페이지
 import View from "../components/common/View.vue";
 
@@ -49,12 +46,6 @@ export default new Router({
       name: constants.URL_TYPE.USER.FINDPASSWORD,
       component: FindPassword,
     },
-    // 포스트
-    // {
-    //   path: "/",
-    //   name: constants.URL_TYPE.POST.MAIN,
-    //   component: List,
-    // },
     // 메인 페이지
     {
       path: "/",

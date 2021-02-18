@@ -40,9 +40,9 @@ export default new Vuex.Store({
         nickname: state.nickname,
         token: state.token
       };
-      //반환된 토큰을 로컬스토리지에 저장
+      // 반환된 토큰을 로컬스토리지에 저장
       localStorage.setItem("userData", JSON.stringify(userData));
-      //token(토큰)을 Axios Header에 추가
+      // token(토큰)을 Axios Header에 추가
       // Axios instance Authorization Header에 JWT Token을 포함
       axios.defaults.headers.common["x-auth-token"] = `${state.token}`;
     },
@@ -67,7 +67,6 @@ export default new Vuex.Store({
   actions: {
     // 로그인 시도 -> mutations로 넘어감
     LOGIN(context, user) {
-      // return axios.post("http://localhost:8080/account/login", user)
       return axios.post(api_url + `/account/login`, user)
           .then((response) => { //로그인 성공 시 토큰(data) 반환
             context.commit('LOGIN', response.data);
