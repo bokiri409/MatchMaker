@@ -11,9 +11,9 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
     private final AuthInterceptor authInterceptor;
 
+    // 인터셉터 추가
     @Override
     public void addInterceptors(InterceptorRegistry registry){
-        System.out.println(" 인터셉터 작동! ");
         registry.addInterceptor(authInterceptor)
                 .addPathPatterns("/api/api-sessions/**", "/api/account/update", "/api/account/delete")    // token 인증을 거치는 Path
                 .excludePathPatterns("/api/account/login");    // 제외 Path

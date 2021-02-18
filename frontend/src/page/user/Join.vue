@@ -1,68 +1,3 @@
-<!--<template>
-  <div class="user" id="join">
-    <div class="wrapC table">
-      <div class="middle">
-        <h1>회원가입</h1>
-        <div class="form-wrap">
-          <div class="input-wrap">
-            <input
-              v-model="nickName"
-              id="nickname"
-              placeholder="닉네임을 입력해주세요"
-              type="text"
-            />
-          </div>
-
-          <div class="input-wrap">
-            <input
-              v-model="email"
-              id="email"
-              placeholder="이메일을 입력해주세요"
-              type="text"
-            />
-          </div>
-
-          <div class="input-wrap password-wrap">
-            <input
-              v-model="password"
-              id="password"
-              :type="passwordType"
-              placeholder="비밀번호를 입력해주세요"
-            />
-            <span :class="{ active: passwordType === 'text' }">
-              <i class="fas fa-eye"></i>
-            </span>
-          </div>
-
-          <div class="input-wrap password-wrap">
-            <input
-              v-model="passwordConfirm"
-              id="password-confirm"
-              :type="passwordConfirmType"
-              placeholder="비밀번호를 한번 더 입력해주세요"
-            />
-            <span :class="{ active: passwordConfirmType === 'text' }">
-              <i class="fas fa-eye"></i>
-            </span>
-          </div>
-        </div>
-
-        <label>
-          <input v-model="isTerm" type="checkbox" id="term " />
-          <span>약관에 동의합니다</span>
-        </label>
-
-        <span class="go-term">약관 보기</span>
-
-        <button class="btn" @click="checkHandler()">
-          <span>
-            작성완료
-          </span>
-        </button>
-      </div>
-    </div>
-  </div>
-</template>-->
 <template>
   <v-container fill-height style="max-width: 400px;">
     <v-layout align-center row wrap>
@@ -139,10 +74,6 @@
                v-model="isTerm" id="term" color="#F2CC85"
                label="약관에 동의합니다."
             ></v-checkbox>
-            <!--<v-simple-checkbox
-               v-model="isTerm" id="term " color="#F2CC85"
-               value="약관에 동의합니다."
-            ></v-simple-checkbox>-->
           </v-col>
           <v-col
             cols="6"
@@ -172,7 +103,6 @@
 
 <script>
   import "../../assets/css/user.scss";
-  // import AxiosInterceptor from "../../utils/AxiosInterceptor.js";
   import axios from "axios";
 
   export default {
@@ -220,18 +150,15 @@
       },
       joinHandler: function() {
         axios
-                // .post("http://localhost:8080/account/signup", {
                 .post(this.$api_url + `/account/signup`, {
                   email: this.email,
                   password: this.password,
                   nickname: this.nickName,
                 })
                 .then((response) => {
-                  console.log(response.data);
                   if (response.data.data == "success") {
                     alert("인증 메일이 발송되었습니다. 이메일을 확인해주세요");
                     axios
-                            // .post("http://localhost:8080/email/send", {
                             .post(this.$api_url + `/email/send`, {
                               email: this.email,
                               password: this.password,

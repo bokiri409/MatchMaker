@@ -17,10 +17,10 @@ export default {
       FINDPASSWORD: "findpassword",
     },
     POST: {
-      MAIN: "main",
-    },
-    COMMON: {
-      VIEW: "view",
-    },
+    MAIN: "main",
   },
+  COMMON: {
+    VIEW: "view",
+  },
+},
 };

@@ -22,7 +22,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     public boolean preHandle(HttpServletRequest servletRequest, HttpServletResponse servletResponse,
                              Object handler) throws Exception {
-        log.info("preHandle!!");
 
         Optional<String> token = resolveToken(servletRequest);
 
@@ -44,7 +43,6 @@ public class AuthInterceptor implements HandlerInterceptor {
     // null의 처리 떄문에 Optional을 사용
     private Optional<String> resolveToken(HttpServletRequest request) {
         String authToken = request.getHeader(AUTHORIZATION_HEADER);
-        log.info("authToken : " + authToken);
         if (StringUtils.hasText(authToken)) {
             // 토큰은 반드시 값이 있어야 하기 때문에 Optional.of()를 사용
             return Optional.of(authToken);

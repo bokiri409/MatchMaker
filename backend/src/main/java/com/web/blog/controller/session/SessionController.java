@@ -55,9 +55,6 @@ public class SessionController {
     @PostMapping(value = "/create-session")
     @ApiOperation(value = "세션 생성")
     public ResponseEntity<JSONObject> createSession(@RequestBody String roomId) {
-        // if (!this.userIsLogged()) {
-        //     return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        // }
        
         JSONObject responseJson = new JSONObject();
         
@@ -74,8 +71,6 @@ public class SessionController {
                 this.roomIdSession.put(roomId, session);
                 this.sessionIdUserIdToken.put(session.getSessionId(), new HashMap<>());
 
-                showMap();
-
                 responseJson.put(0, roomId);
                 return new ResponseEntity<>(responseJson, HttpStatus.OK);
             } catch (Exception e) {
@@ -87,10 +82,6 @@ public class SessionController {
     @PostMapping(value = "/generate-token")
     @ApiOperation(value = "토큰 생성")
 	public ResponseEntity<JSONObject> generateToken(@RequestBody String roomId) {
-
-		// if (!this.userIsLogged()) {
-		// 	return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-		// }
 
 		Session session = this.roomIdSession.get(roomId);
 		OpenViduRole role = OpenViduRole.PUBLISHER;
@@ -108,9 +99,7 @@ public class SessionController {
 		try {
             String token = session.generateToken(tokenOptions);
 
-			//this.sessionIdUserIdToken.get(session.getSessionId()).put(this.user.getLoggedUser().getName(), token);
 			responseJson.put(0, token);
-			showMap();
 
 			return new ResponseEntity<>(responseJson, HttpStatus.OK);
 		} catch (OpenViduJavaClientException e1) {
@@ -127,9 +116,7 @@ public class SessionController {
 					this.sessionIdUserIdToken.put(session.getSessionId(), new HashMap<>());
 					String token = session.generateToken(tokenOptions);
 
-//					this.sessionIdUserIdToken.get(session.getSessionId()).put(this.user.getLoggedUser().getUid(), token);
 					responseJson.put(0, token);
-					showMap();
 
 					return new ResponseEntity<>(responseJson, HttpStatus.OK);
 				} catch (OpenViduJavaClientException | OpenViduHttpException e3) {
@@ -144,30 +131,19 @@ public class SessionController {
     @PostMapping(value = "/remove-user")
     @ApiOperation(value = "유저가 방에서 나갈 때 삭제")
     public ResponseEntity<JSONObject> removeUser(@RequestBody String roomId) throws Exception {
-//        if (!this.userIsLogged()){
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        }
 
         if (this.roomIdSession.get(roomId) == null){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         String sessionId = this.roomIdSession.get(roomId).getSessionId();
-//        if (this.sessionIdUserIdToken.get(sessionId).remove(this.user.getLoggedUser().getUid()) != null){
-            // 이 유저는 방을 나감
             if (this.sessionIdUserIdToken.get(sessionId).isEmpty()) {
                 // 나간 유저가 방에 남은 마지막 유저였다면
                 this.roomIdSession.remove(roomId);
                 this.sessionIdUserIdToken.remove(sessionId);
             }
 
-            showMap();
-
             return new ResponseEntity<>(HttpStatus.OK);
-//        } else{
-//            System.out.println("앱 서버에서 문제 발생: 유저가 유효한 토큰을 가지고 있지 않습니다.");
-//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//        }
     }
     
     private boolean userIsLogged() {
