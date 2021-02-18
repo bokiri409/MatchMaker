@@ -63,6 +63,24 @@
             counter
             @click:append="show2 = !show2"
         ></v-text-field>
+        <span id="session">
+          <modal name="terms-modal" height="500">
+            <p class="modal-title">Match Maker 약관</p>
+            <section style="padding-left: 20px; padding-right: 20px">
+              <p class="modal-description">환영합니다!</p>
+              <em>제 1 장</em><br>
+              <p><b>제 1 조 목적 및 정의</b><br>
+              본 회원약관은 Match Maker 가 운영하는 서비스를 이용함에 있어 관리자와
+              이용자('회원')의 권리, 의무 및 책임사항을 규정함을 목적으로 한다. <br></p>
+              <p><b>제 2 조 이용계약의 체결</b><br>
+              회원 가입 시 약관 동의 버튼을 누르면 약관에 동의하여 이 계약이 체결된 것으로 간주한다. <br></p>
+              <p><b>제 3 조 회원가입의 승낙</b><br>
+              회원 가입 신청 양식에 가입 희망 회원이 회원 가입 신청을 하면
+              이메일 인증 절차를 거쳐 서비스를 이용할 수 있다.</p>
+            </section>
+            <button class="modal-hide" @click="hideTermsModal()">닫기</button>
+          </modal>
+        </span>
 
         <v-row no-gutters>
           <v-col
@@ -81,7 +99,7 @@
             class="pt-5 pr-3"
             align="right"
           >
-            <a>
+            <a @click="showTermsModal()">
               약관보기
             </a>
           </v-col>
@@ -103,6 +121,7 @@
 
 <script>
   import "../../assets/css/user.scss";
+  import "../../assets/css/video.css";
   import axios from "axios";
 
   export default {
@@ -133,6 +152,11 @@
         err &&
         !(this.password == this.passwordConfirm) &&
         ((msg = "비밀번호를 다시 확인해주세요!"), (err = false));
+        err &&
+        !this.isTerm &&
+        ((msg =
+                "약관에 동의해주세요!"),
+                (err = false));
 
         if (!err) alert(msg);
         else this.joinHandler();
@@ -187,6 +211,13 @@
           path: "/user/login",
         });
       },
+        showTermsModal () {
+            this.$modal.show('terms-modal');
+        },
+
+        hideTermsModal () {
+            this.$modal.hide('terms-modal');
+        },
     },
     watch: {},
     data: () => {
