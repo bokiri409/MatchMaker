@@ -390,9 +390,9 @@ export default {
 									{
 										"uri": "http://clipart-library.com/images_k/dogs-transparent-background/dogs-transparent-background-15.png",
 										"offsetXPercent": "-0.1F",
-										"offsetYPercent": "-0.8F",
+										"offsetYPercent": "-1.2F",
 										"widthPercent": "1.0F",
-										"heightPercent": "1.0F"
+										"heightPercent": "1.5F"
 									});
 							}
 						});
