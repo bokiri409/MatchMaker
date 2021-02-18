@@ -13,7 +13,8 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class CorsFilter extends OncePerRequestFilter {
-
+    // 웹 서버의 모든 리소스 요청을 가로채서 Cross-Domain 요청인지를 체크
+    // 응답을 전달하기 전에 적절한 CORS 정책과 Header를 적용한다.
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         response.setHeader("Access-Control-Allow-Origin", "*");
@@ -21,7 +22,7 @@ public class CorsFilter extends OncePerRequestFilter {
         response.setHeader("Access-Control-Max-Age", "1800");
         response.setHeader("Access-Control-Allow-Headers", "x-auth-token, content-type");
         response.addHeader("Access-Control-Expose-Headers", "x-auth-token");
-        log.info("Cors Filter 적용");
+//        log.info("Cors Filter 적용");
 
         if ("OPTIONS".equals(request.getMethod())) {
             response.setStatus(HttpServletResponse.SC_OK);
