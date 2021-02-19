@@ -63,25 +63,14 @@
           >
             <mdb-container class="mt-5">
 
-              <a @click="showModal = true"><img class="img-fluid z-depth-1" src="../../assets/123.jpg" alt="video" data-toggle="modal" data-target="#modal1"></a>
+              <a @click="showModal = true"><img id="thumbnail" class="img-fluid z-depth-1" src="../../assets/thumbnail.png" alt="video" data-toggle="modal" data-target="#modal1"></a>
               <mdb-modal size="lg" :show="showModal" @close="showModal = false">
                 <mdb-modal-body class="mb-0 p-0">
                   <div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
-                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/A3PDXmYoF5U"
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Mt9HUj-bu7Q"
                       allowfullscreen></iframe>
                   </div>
                 </mdb-modal-body>
-                <mdb-modal-footer class="justify-content-center">
-                  <span class="mr-4">Spread the word!</span>
-                  <a class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook"></i></a>
-                  <!--Twitter-->
-                  <a class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
-                  <!--Google +-->
-                  <a class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus"></i></a>
-                  <!--Linkedin-->
-                  <a class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
-                  <mdb-btn outline="primary" rounded size="md" class="ml-4" @click.native="showModal = false">Close</mdb-btn>
-                </mdb-modal-footer>
               </mdb-modal>
             </mdb-container>
           </v-sheet>
@@ -141,6 +130,11 @@ export default {
 
 #about_sheet {
   margin-bottom: 80px;     
+}
+
+#thumbnail {
+  width: 100%;
+  height: 450px;
 }
 
 .snip1504 {
