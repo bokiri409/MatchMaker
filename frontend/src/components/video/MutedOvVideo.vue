@@ -1,0 +1,17 @@
+<template>
+	<video autoplay controls muted/>
+</template>
+
+<script>
+export default {
+	name: 'OvVideo',
+
+	props: {
+		streamManager: Object,
+	},
+
+	mounted () {
+		this.streamManager.addVideoElement(this.$el);
+	},
+};
+</script>
